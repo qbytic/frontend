@@ -1,0 +1,17 @@
+html {
+}
+
+#app-mount {
+  margin: auto;
+  text-align: center;
+}
+.hoverable:not([disabled]) {
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  transform-style: preserve-3d;
+}
+.hoverable:active:not([disabled]),
+.hoverable:focus:not([disabled]),
+.hoverable:hover:not([disabled]) {
+  transform: perspective(1px) scale(1.048) translateZ(0);
+}
