@@ -1,20 +1,26 @@
 const plugins = [
   "@babel/plugin-proposal-class-properties",
   "@babel/plugin-syntax-dynamic-import",
+
   [
     "@babel/plugin-transform-react-jsx",
     {
-      throwIfNamespace: false,
+      throwIfNamespace: true,
       runtime: "automatic",
       importSource: "@hydrophobefireman/ui-lib",
     },
   ],
 ];
+const tsPreset = "@babel/preset-typescript";
 module.exports = {
   env: {
-    modern: { presets: ["@babel/preset-modules"], plugins },
+    modern: {
+      presets: [tsPreset, "@babel/preset-modules"],
+      plugins,
+    },
     legacy: {
       presets: [
+        tsPreset,
         [
           "@babel/preset-env",
           {
