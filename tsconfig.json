@@ -3,10 +3,12 @@
       "module": "ESNext",
       "alwaysStrict": true,
       "declaration": true,
-      "incremental": true,
+       "moduleResolution":"Node",
       "target": "ESNext",
-      "rootDir": "./src"
-    },
-    "exclude": ["node_modules"]
+      "rootDir": "./",
+      "baseUrl":".",
+      "jsx":"preserve"
+    }
+    
   }
   

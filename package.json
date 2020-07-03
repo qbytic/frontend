@@ -6,9 +6,9 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "npm run prebuild && webpack --config webpack.config.prod.js && npm run clean-output",
-    "prebuild": "cp webpack.config.js webpack.config.prod.js && rm -rf ./docs/",
-    "clean-output": "rm webpack.config.prod.js && npm run copy-static",
+    "build": "webpack --config webpack.config.prod.js",
+    "prebuild": "tsc --noEmit && cp webpack.config.js webpack.config.prod.js && rm -rf ./docs/",
+    "postbuild": "rm webpack.config.prod.js && npm run copy-static",
     "copy-static": "for i in ./build_static/*;do echo \"$i\" && cp -r \"$i\" ./docs/; done"
   },
   "repository": {
@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@hydrophobefireman/j-utils": "^2.1.0",
-    "@hydrophobefireman/ui-lib": "^1.3.3"
+    "@hydrophobefireman/ui-lib": "^1.3.4"
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",
@@ -50,6 +50,7 @@
     "style-ext-html-webpack-plugin": "^4.1.2",
     "terser": "^4.8.0",
     "terser-webpack-plugin": "^3.0.6",
+    "typescript": "^3.9.6",
     "url-loader": "^4.1.0",
     "webpack": "^5.0.0-beta.20",
     "webpack-cli": "^3.3.12",

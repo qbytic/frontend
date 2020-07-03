@@ -39,7 +39,7 @@ function getRouteChild(
       match={createRoutePath(path)}
       component={
         <section data-app-state={path}>
-          <AsyncComponent componentPromise={compPromise} fallback="loading.." />
+          <AsyncComponent componentPromise={compPromise} fallback={<div>Loading...</div>} />
         </section>
       }
     />
