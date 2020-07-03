@@ -30,16 +30,30 @@ addRoute("/register", () =>
 /*
 ===========ADD ALL CODE SPLIT POINTS ABOVE============
  */
+interface CustomRouteFallback {
+  promise: () => Promise<ComponentType>;
+  fallback: ComponentType;
+}
 function getRouteChild(
   path: string,
-  compPromise: () => Promise<ComponentType>
+  compPromise: CustomRouteFallback | CustomRouteFallback["promise"]
 ) {
   return (
     <Path
       match={createRoutePath(path)}
       component={
         <section data-app-state={path}>
-          <AsyncComponent componentPromise={compPromise} fallback={<div>Loading...</div>} />
+          <AsyncComponent
+            componentPromise={
+              (compPromise as CustomRouteFallback).promise ||
+              (compPromise as CustomRouteFallback["promise"])
+            }
+            fallback={
+              (compPromise as CustomRouteFallback).fallback || (
+                <div>Loading...</div>
+              )
+            }
+          />
         </section>
       }
     />
