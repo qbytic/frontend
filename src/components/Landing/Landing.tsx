@@ -1,5 +1,4 @@
-// @ts-ignore
-import { VNode } from "@hydrophobefireman/ui-lib/src/types";
+import { VNode } from "@hydrophobefireman/ui-lib";
 
 export default function Landing(): VNode {
   return <div>Hello World</div>;

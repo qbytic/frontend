@@ -1,4 +1,5 @@
-import { VNode } from "@hydrophobefireman/ui-lib/src/types";
+import { VNode } from "@hydrophobefireman/ui-lib";
+
 export default function Register(): VNode {
-  return <div>Todo</div>;
+  return <div />;
 }

@@ -7,6 +7,7 @@ const HTMLInlineCSSWebpackPlugin = require("html-inline-css-webpack-plugin")
 const WebpackModuleNoModulePlugin = require("webpack-module-nomodule-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const cfg = require("./.babelrc");
+
 const { basename } = require("path");
 
 const isProd = basename(__filename).includes(".prod");
@@ -65,14 +66,13 @@ function getCfg(isLegacy) {
     },
     entry: `${__dirname}/src/App.tsx`,
     output: {
-      // ecmaVersion: isLegacy ? 5 : 6,
+      ecmaVersion: isLegacy ? 5 : 6,
       path: `${__dirname}/docs/`,
       filename: `${isLegacy ? "legacy" : "es6"}/[name]-[contenthash].js`,
     },
     resolve: { extensions: [".ts", ".tsx", ".js", ".json"] },
     mode,
     optimization: {
-      concatenateModules: false,
       minimizer: prodOrDev([new TerserWebpackPlugin({ parallel: true })], []),
       splitChunks: {
         chunks: "all",

@@ -21,8 +21,8 @@
     "url": "https://github.comqbytic/frontend/issues"
   },
   "dependencies": {
-    "@hydrophobefireman/j-utils": "^2.1.0",
-    "@hydrophobefireman/ui-lib": "^1.3.4"
+    "@hydrophobefireman/j-utils": "^2.1.1",
+    "@hydrophobefireman/ui-lib": "^1.4.2"
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",
