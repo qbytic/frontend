@@ -1,6 +1,6 @@
 import FakeSet from "@hydrophobefireman/j-utils/@build-modern/src/modules/es6/loose/Set/index";
 import FakeMap from "@hydrophobefireman/j-utils/@build-modern/src/modules/es6/loose/Map/index";
-
+import * as store from "../globalStore";
 import { userRoutes } from "../util/api_routes";
 import * as requests from "./requests";
 
@@ -39,77 +39,45 @@ interface SecuredTeamData {
   event_data: any;
   submissions: Record<string, Record<string, unknown>>[];
 }
-export type Events =
-  | "gaming"
-  | "prog"
-  | "pentest"
-  | "lit"
-  | "music"
-  | "video"
-  | "minihalo";
 
 interface Subscriber<T> {
   (newData: T): void;
 }
 
+interface LoginResponse {
+  success?: boolean;
+  user_data: UserData;
+}
+
 class Auth {
-  userData: UserData = null;
-  clanData: FakeMap<Events, ClanData> = null;
-
-  private userStateSubscribers = new FakeSet<Subscriber<UserData>>();
-
-  private clanDataSubscribers = new FakeMap<
-    Events,
-    FakeSet<Subscriber<ClanData>>
-  >();
-
   get isLoggedIn(): boolean {
-    return this.userData != null && this.userData.user != null;
+    const resp = store.data.get("authData") as UserData;
+    return resp && resp.user != null;
   }
 
-  setUserData(data: UserData): void {
-    this.userData = data;
-    this.userStateSubscribers.forEach((subscriber) => subscriber(data));
-  }
-  setClanData(event: Events, data: ClanData): void {
-    this.clanData.set(event, data);
-    const subs = this.clanDataSubscribers.get(event);
-    subs && subs.forEach((subscriber) => subscriber(data));
-  }
-
-  async login(user: string, password: string) {
-    const response = requests.postJSON<UserData>(userRoutes.login, {
+  login(
+    user: string,
+    password: string
+  ): requests.AbortableFetchResponse<LoginResponse> {
+    const response = requests.postJSON<LoginResponse>(userRoutes.login, {
       user,
       password,
     });
-    const data = (await response.json).data;
-    if (data) this.setUserData(data);
-    return response;
+    return {
+      controller: response.controller,
+      json: response.json.then((resp) => {
+        const js = resp.data;
+        const data = js && js.user_data;
+        if (data) store.updateStore("authData", data);
+        return resp;
+      }),
+    };
   }
   logout() {
     const req = requests
       .get(userRoutes.logout)
-      .json.then(() => this.setUserData(null));
+      .json.then(() => store.updateStore("authData", null));
     return req;
-  }
-  addAuthStateSubscription(subscriber: Subscriber<UserData>) {
-    this.userStateSubscribers.add(subscriber);
-  }
-  removeAuthStateSubscription(subscriber: Subscriber<UserData>) {
-    this.userStateSubscribers.delete(subscriber);
-  }
-  removeClanStateSubscription(event: Events, subscriber: Subscriber<ClanData>) {
-    const set = this.clanDataSubscribers.get(event);
-    set && set.delete(subscriber);
-  }
-  addClanDataSubscription(event: Events, subscriber: Subscriber<ClanData>) {
-    const set = this.clanDataSubscribers.get(event);
-    if (set) {
-      set.add(subscriber);
-    } else {
-      const eventSet = new FakeSet<Subscriber<ClanData>>([subscriber]);
-      this.clanDataSubscribers.set(event, eventSet);
-    }
   }
 }
 

@@ -5,8 +5,11 @@ import {
   useEffect,
   useState,
   useRef,
+  useCallback,
+  Router,
 } from "@hydrophobefireman/ui-lib";
-import { auth, UserData, ClanData, Events } from "./http/auth";
+import { auth, UserData, ClanData } from "./http/auth";
+import * as store from "./globalStore";
 
 type QueryParams =
   | string[][]
@@ -16,6 +19,10 @@ type QueryParams =
 
 interface QueryStringHook {
   (): [URLSearchParams, (queryString: QueryParams) => void];
+}
+
+export function useMount<T extends Array<any>>(fn: (...args: T) => void): void {
+  return useEffect(fn, []);
 }
 
 export const useQueryString: QueryStringHook = () =>
@@ -34,14 +41,15 @@ export const useQueryString: QueryStringHook = () =>
  * this can be used by our header components
  * that normally live outside of a <Router/>
  */
-export const useCurrentLocation = (): Location => {
-  const [loc, setLoc] = useState(location);
-  const ref = useRef<() => void>();
-  useEffect(() => {
-    ref.current = () => setLoc(location);
-    RouterSubscription.subscribe(ref.current);
-    return () => RouterSubscription.unsubscribe(ref.current);
-  }, []);
+const setPath = () => Router.path;
+export const useLocation = (): string => {
+  const [loc, setLoc] = useState(setPath);
+
+  useMount(() => {
+    const current = () => setLoc(setPath);
+    RouterSubscription.subscribe(current);
+    return () => RouterSubscription.unsubscribe(current);
+  });
   return loc;
 };
 interface CB {
@@ -49,11 +57,7 @@ interface CB {
 }
 export function useInterval(callback: CB, delay?: number) {
   const savedCallback = useRef<CB>();
-
-  useEffect(() => {
-    savedCallback.current = callback;
-  }, [callback]);
-
+  savedCallback.current = callback;
   useEffect(() => {
     const tick = () => savedCallback.current();
     if (delay !== null) {
@@ -64,39 +68,120 @@ export function useInterval(callback: CB, delay?: number) {
 }
 
 export function useAuthenticationState() {
-  const [authState, setAuth] = useState<UserData>(auth.userData);
-  useEffect(() => {
+  const [authState, setAuth] = useState<UserData>(
+    () => store.data.get("authData") as UserData
+  );
+  useMount(() => {
     const cb = (data: UserData) => setAuth(data);
-    auth.addAuthStateSubscription(cb);
-    return () => auth.removeAuthStateSubscription(cb);
-  }, []);
+    store.subscribe("authData", cb);
+    return () => store.unsubscribe("authData", cb);
+  });
   return authState;
 }
 
-export function useClanDataState(event: Events) {
-  const [clanData, setClanData] = useState<ClanData>(() =>
-    auth.clanData.get(event)
-  );
-  useEffect(() => {
-    const cb = (data: ClanData) => setClanData(data);
-    auth.addClanDataSubscription(event, cb);
-    return () => auth.removeClanStateSubscription(event, cb);
-  }, []);
-  return clanData;
-}
-
+// export function useClanDataState(event: store.Events) {
+//   const [clanData, setClanData] = useState<ClanData>(() =>
+//     auth.clanData.get(event)
+//   );
+//   useMount(() => {
+//     const cb = (data: ClanData) => setClanData(data);
+//     auth.addClanDataSubscription(event, cb);
+//     return () => auth.removeClanStateSubscription(event, cb);
+//   });
+//   return clanData;
+// }
+const getDimensions = () => [window.innerHeight, window.innerWidth];
 export function useViewportSize() {
-  const [innerHeight, setInnerHeight] = useState(() => window.innerHeight);
-  const [innerWidth, setInnerWidth] = useState(() => window.innerWidth);
+  const [dimensions, setDimensions] = useState(getDimensions);
 
-  useEffect(() => {
-    const callback = () => {
-      setInnerHeight(window.innerHeight);
-      setInnerWidth(window.innerWidth);
-    };
+  useMount(() => {
+    const callback = () => setDimensions(getDimensions);
     addEventListener("resize", callback);
     return () => removeEventListener("resize", callback);
-  }, []);
+  });
 
-  return [innerHeight, innerWidth];
+  return dimensions;
+}
+
+export function useObserver(
+  nodeRef: { current: HTMLElement },
+  threshold: number = 0.5
+): boolean {
+  const [intersecting, setIntersecting] = useState(false);
+  const callback: IntersectionObserverCallback = useCallback(
+    (entries: IntersectionObserverEntry[]) =>
+      entries.some((entry) => {
+        if (entry.isIntersecting) {
+          setIntersecting(true);
+          return true;
+        }
+      }) || setIntersecting(false)
+  );
+  useEffect(() => {
+    if (!nodeRef.current) return;
+    const observer = new IntersectionObserver(callback, { threshold });
+    observer.observe(nodeRef.current);
+    return () => observer.disconnect();
+  }, [threshold, nodeRef.current]);
+
+  return intersecting;
+}
+
+export function useTitle(title: string) {
+  return useMount(() => void (document.title = title));
+}
+export type Themes = "dark" | "light";
+export function useTheme(
+  $theme: Themes
+): [Themes, (arg: Themes | ((old: Themes) => Themes)) => void] {
+  const [theme, setTheme] = useState($theme);
+  useEffect(() => {
+    updateTheme(theme);
+  }, [theme]);
+  return [theme, setTheme];
+}
+export function updateTheme(theme: Themes) {
+  const classList = document.body.classList;
+  const other = theme === "dark" ? "light" : "dark";
+  classList.remove(other);
+  classList.add(theme);
+}
+
+export function useGlobalState<T>(conf: store.ConfigTypes): T {
+  const [value, setValue] = useState(() => store.data.get(conf) as T);
+  useEffect(() => {
+    const listener = (nv: T) => setValue(nv);
+    store.subscribe(conf, listener);
+    const newVal = store.data.get(conf);
+    newVal != value && setValue(newVal as T);
+    return () => store.unsubscribe(conf, listener);
+  }, [conf]);
+  return value;
+}
+
+export function useKeyPress(
+  key: KeyboardEvent["key"],
+  onKeyPress: EventListener
+): void {
+  useEffect(() => {
+    if (!key) return;
+    const keyDownListener = (e: KeyboardEvent) =>
+      e.key === key && onKeyPress(e);
+
+    window.addEventListener("keydown", keyDownListener);
+
+    return () => {
+      window.removeEventListener("keydown", keyDownListener);
+    };
+  }, [key, onKeyPress]);
+}
+
+export function useInputFocus(
+  props$focus: boolean
+): { current: HTMLInputElement } {
+  const inputRef = useRef<HTMLInputElement>();
+  useEffect(() => props$focus && inputRef.current && inputRef.current.focus(), [
+    props$focus,
+  ]);
+  return inputRef;
 }

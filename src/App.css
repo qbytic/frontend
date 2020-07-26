@@ -1,4 +1,27 @@
 html {
+  -webkit-tap-highlight-color: transparent;
+  --background-dark: #000;
+  --background-light: #fff;
+  --qbytic-blue: #4dc5c9;
+  --input-color: #4e4e4e;
+  --header-font-family: "nexa";
+}
+body.dark,
+body {
+  padding: 0;
+  margin: 0;
+  transition: 0.3s linear;
+  font-family: nats, ubuntu, sans-serif;
+  background-color: var(--background-dark);
+  color: var(--background-light);
+  --current-bg: var(--background-dark);
+  --current-color: var(--background-light);
+}
+body.light {
+  background-color: var(--background-light);
+  color: var(--background-dark);
+  --current-bg: var(--background-light);
+  --current-color: var(--background-dark);
 }
 
 #app-mount {
@@ -14,4 +37,9 @@ html {
 .hoverable:focus:not([disabled]),
 .hoverable:hover:not([disabled]) {
   transform: perspective(1px) scale(1.048) translateZ(0);
+}
+
+a {
+  color: var(--current-color);
+  text-decoration: none;
 }

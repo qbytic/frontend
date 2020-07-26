@@ -1,0 +1,105 @@
+.q-blue {
+  color: var(--qbytic-blue);
+}
+.bold {
+  font-weight: bold;
+}
+.heading {
+  font-size: 3rem;
+}
+.nexa {
+  font-family: nexa, ubuntu, sans-serif;
+}
+
+.hide {
+  display: none !important;
+}
+.fade-out {
+  transition: 0.3s linear;
+  opacity: 0;
+}
+.fade-in {
+  animation: fade__in 0.3s linear;
+  animation-fill-mode: forwards;
+}
+@keyframes fade__in {
+  from {
+    opacity: 0;
+  }
+  top {
+    opacity: 1;
+  }
+}
+.qbytic-logo {
+  display: inline-block;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.mask {
+  height: 100vh;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(48, 48, 48, 0.8);
+  z-index: 5;
+  position: fixed;
+  width: 100vw;
+  left: 0;
+  right: 0;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.center {
+  margin: auto;
+  text-align: center;
+}
+.form-inp {
+  background-color: #c4c4c4;
+  border-radius: 20px;
+  border: 2px solid #c4c4c4;
+}
+.form-inp-wrapper {
+  width: 60%;
+  margin: auto;
+}
+
+.upper {
+  text-transform: uppercase;
+}
+
+.action-btn {
+  margin-top: 10px;
+  width: 10rem;
+  height: 2rem;
+  border-radius: 5px;
+  outline: none;
+  border: 2px solid var(--qbytic-blue);
+  background: var(--current-bg);
+  color: var(--current-color);
+}
+
+.action-btn:hover {
+  filter: grayscale(1);
+}
+
+@keyframes scale_anim {
+  0% {
+    transform: scale(0.01);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+button {
+  color: inherit;
+  background: var(--background-color);
+}
+
+.m-heading {
+  margin-top: 50px;
+}

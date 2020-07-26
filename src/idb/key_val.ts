@@ -17,7 +17,10 @@ const fallbackSet = (
 export class WebStore {
   readonly _dbp: Promise<IDBDatabase>;
 
-  constructor(dbName = "keyval-store", readonly storeName = "keyval") {
+  constructor(
+    dbName = "qbytic",
+    readonly storeName = "tokenStore"
+  ) {
     this._dbp = new Promise((resolve, reject) => {
       const openreq = indexedDB.open(dbName, 1);
       openreq.onerror = () => reject(openreq.error);

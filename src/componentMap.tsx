@@ -3,9 +3,15 @@ import {
   Router,
   createRoutePath,
   Path,
+  VNode,
+  ComponentType,
+  redirect,
 } from "@hydrophobefireman/ui-lib";
-import { ComponentType } from "@hydrophobefireman/ui-lib/src/types";
+
 import entries from "@hydrophobefireman/j-utils/@build-modern/src/modules/Object/entries";
+import { useGlobalState } from "./customHooks";
+import { Header } from "./components/Header/Header";
+import { auth } from "./http/auth";
 
 interface Mod<T> {
   default: T;
@@ -24,6 +30,7 @@ addRoute("/login", () => import("./components/Login/Login").then(getDefault));
 addRoute("/register", () =>
   import("./components/Register/Register").then(getDefault)
 );
+addRoute("/logout", () => auth.logout().then(() => void redirect("/login")));
 
 // addRoute("/u/-/discord/auth/flow/signup",()=>//)
 
@@ -34,6 +41,7 @@ interface CustomRouteFallback {
   promise: () => Promise<ComponentType>;
   fallback: ComponentType;
 }
+
 function getRouteChild(
   path: string,
   compPromise: CustomRouteFallback | CustomRouteFallback["promise"]
@@ -42,7 +50,7 @@ function getRouteChild(
     <Path
       match={createRoutePath(path)}
       component={
-        <section data-app-state={path}>
+        <section data-app-state={path} class="route-path">
           <AsyncComponent
             componentPromise={
               (compPromise as CustomRouteFallback).promise ||
@@ -60,14 +68,17 @@ function getRouteChild(
   );
 }
 
+const routes: VNode[] = entries(routeMap).map(([path, comp]) =>
+  getRouteChild(path, comp)
+);
 export function ComponentLoader() {
+  const header = useGlobalState<boolean>("showHeader");
   return (
-    <main class="router-app">
-      <div class="route-container">
-        <Router>
-          {entries(routeMap).map(([path, comp]) => getRouteChild(path, comp))}
-        </Router>
-      </div>
-    </main>
+    <>
+      {header && <Header />}
+      <main class="app">
+        <Router>{routes}</Router>
+      </main>
+    </>
   );
 }

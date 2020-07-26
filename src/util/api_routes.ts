@@ -12,6 +12,7 @@ export const userRoutes = {
   allUsers: absoluteURL("/users/all/"),
   resetPassword: absoluteURL("/users/passwords/reset/"),
   verifyEmail: absoluteURL("/users/email/verify/"),
+  authCheck: absoluteURL("/users/auth/check/"),
   userData: (userName: string) => absoluteURL(`/users/${userName}/data/`),
   editUserData: (userName: string) => absoluteURL(`/users/${userName}/edit/`),
 };

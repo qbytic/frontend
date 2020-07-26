@@ -12,6 +12,7 @@ interface AuthenticationTokens {
   accessToken: string;
   refreshToken: string;
 }
+
 export interface AbortableFetchResponse<T> {
   json: Promise<{ data: T; error?: string }>;
   controller: AbortController;
