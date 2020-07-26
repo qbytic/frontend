@@ -6,7 +6,7 @@ import {
   JSXInternal,
   useEffect,
 } from "@hydrophobefireman/ui-lib";
-interface InputProps {
+interface InputProps extends Omit<JSXInternal.HTMLAttributes, "onInput"> {
   id?: string;
   onInput(value: string): void;
   value?: string;
@@ -17,9 +17,7 @@ interface InputProps {
   errorText?: string;
   $ref?: { current: HTMLElement };
 }
-export function AnimatedInput(
-  props: InputProps & JSXInternal.HTMLAttributes
-): VNode {
+export function AnimatedInput(props: InputProps): VNode {
   const randomId = useMemo(() => "" + Math.random(), []);
   const {
     id = randomId,

@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@hydrophobefireman/j-utils": "^2.1.1",
-    "@hydrophobefireman/ui-lib": "^1.4.11"
+    "@hydrophobefireman/ui-lib": "^1.4.13"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",
@@ -37,7 +37,7 @@
     "autoprefixer": "^9.8.5",
     "babel-loader": "^8.1.0",
     "core-js": "^3.6.5",
-    "css-loader": "^3.6.0",
+    "css-loader": "^4.0.0",
     "cssnano": "^4.1.10",
     "file-loader": "^6.0.0",
     "html-inline-css-webpack-plugin": "^1.8.1",

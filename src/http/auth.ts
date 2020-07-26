@@ -1,5 +1,3 @@
-import FakeSet from "@hydrophobefireman/j-utils/@build-modern/src/modules/es6/loose/Set/index";
-import FakeMap from "@hydrophobefireman/j-utils/@build-modern/src/modules/es6/loose/Map/index";
 import * as store from "../globalStore";
 import { userRoutes } from "../util/api_routes";
 import * as requests from "./requests";
