@@ -1,4 +1,5 @@
 import { useRef, useEffect, VNode } from "@hydrophobefireman/ui-lib";
+import { useKeyPress } from "../../customHooks";
 
 interface PopupProps {
   title: string;
@@ -7,6 +8,7 @@ interface PopupProps {
 }
 export function Popup(props: PopupProps) {
   const buttonRef = useRef<HTMLButtonElement>();
+  useKeyPress("Escape", props.onClose);
   useEffect(() => buttonRef.current && buttonRef.current.focus(), []);
   return (
     <div class="mask" onClick={props.onClose}>

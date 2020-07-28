@@ -159,10 +159,7 @@ export function useGlobalState<T>(conf: store.ConfigTypes): T {
   return value;
 }
 
-export function useKeyPress(
-  key: KeyboardEvent["key"],
-  onKeyPress: EventListener
-): void {
+export function useKeyPress(key: string, onKeyPress: EventListener): void {
   useEffect(() => {
     if (!key) return;
     const keyDownListener = (e: KeyboardEvent) =>

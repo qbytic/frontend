@@ -1,4 +1,4 @@
-import { useState, useCallback, A, useEffect } from "@hydrophobefireman/ui-lib";
+import { useState, useCallback, A } from "@hydrophobefireman/ui-lib";
 import {
   useAuthenticationState,
   useLocation,
@@ -36,7 +36,13 @@ function LinkHome() {
 }
 export function MenuButton(props: { onClick: EventListener; active: boolean }) {
   return (
-    <button class="hoverable menubtn" onClick={props.onClick} tabindex={0}>
+    <button
+      class="hoverable menubtn"
+      onClick={props.onClick}
+      tabindex={0}
+      title="menu"
+      aria-label="menu"
+    >
       <div>
         <svg
           class="menu-btn-svg"
@@ -93,7 +99,7 @@ function LinkRenderer(props: { active: boolean; onClick: EventListener }) {
   return (
     <>
       {props.active && <div class="mask" onClick={props.onClick} />}
-      <div class={"link-wrapper" + (props.active ? " " : " out")}>
+      <div class={"link-wrapper" + (props.active ? "" : " out")}>
         {links.map(([text, url]) => (
           <A
             class="header-link hoverable"

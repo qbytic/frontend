@@ -10,16 +10,61 @@ export function Logo(props: LogoProps) {
 
   return (
     <A href="/" class={["hoverable", "qbytic-logo"].concat(props.class)}>
-      <svg viewBox="0 0 571 571" height={height} width={width}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 257.25 257.25"
+        height={height}
+        width={width}
+      >
         <defs>
-          <clipPath id="a">
-            <path d="M-1395-985h3456v2592h-3456z" />
-          </clipPath>
+          <linearGradient
+            id="A"
+            x1="344.47"
+            x2="400.13"
+            y1="453.82"
+            y2="550.23"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop offset="0" stop-color="#56f8ff" />
+            <stop offset=".84" stop-color="#008aa2" />
+          </linearGradient>
+          <linearGradient
+            id="B"
+            x1="362.67"
+            x2="290.7"
+            y1="475.12"
+            y2="433.58"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop offset=".3" stop-color="#56f8ff" />
+            <stop offset="1" stop-color="#5f4dff" />
+          </linearGradient>
+          <radialGradient
+            id="C"
+            cx="297.97"
+            cy="420.33"
+            r="128.62"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop offset=".82" stop-color="#00d4d1" />
+            <stop offset="1" stop-color="#007594" />
+          </radialGradient>
         </defs>
-        <g clip-path="url(#a)">
+        <g transform="translate(-169.35 -291.71)">
           <path
-            fill="#333"
-            d="M287 287h180.4c0 99.64-80.76 180.4-180.4 180.4V287zm283.2-1.6v1.6H467.4c0-99.64-80.76-180.4-180.4-180.4S106.6 187.36 106.6 287 187.36 467.4 287 467.4v102.8h-1.6C128.1 570.2.6 442.7.6 285.4S128.1.6 285.4.6s284.8 127.5 284.8 284.8zM467.4 287c0 99.64-80.76 180.4-180.4 180.4V287h180.4zm102.8 0v283.2H287c156.04-.86 282.34-127.16 283.2-283.2z"
+            fill="url(#A)"
+            d="M426.52 420.34c0 58.05-70.5 128.54-128.54 128.54h128.54V420.34z"
+          />
+          <path
+            fill="none"
+            stroke="url(#C)"
+            stroke-miterlimit="10"
+            stroke-width="47"
+            d="M298 525.46a105.13 105.13 0 11105.1-105.13"
+          />
+          <path
+            fill="url(#B)"
+            d="M298.35 420.33L298 502s80.1 2.5 81.58-81.27z"
           />
         </g>
       </svg>

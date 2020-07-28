@@ -23,16 +23,14 @@ function AboutQbytic(props: ThemeChangeProps): VNode {
   return (
     <section ref={ref} class="landing_section_info">
       <div class="q-blue nexa bold heading">What is Qbytic</div>
-      <div class="landing_answer">
+      <div class="landing-answer">
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec orci
-          sem, laoreet dapibus ultricies sed, ultricies rutrum arcu. Proin
-          gravida a quam eget aliquet. Praesent bibendum risus vel lectus tempor
-          feugiat. Quisque eget ipsum et lectus convallis aliquam. Nam id tempor
-          enim. Vestibulum vel sapien ut erat convallis tempor. Nam in pulvinar
-          purus. Aenean mattis accumsan est id scelerisque. Praesent tincidunt
-          eget nunc nec venenatis. Praesent iaculis in est at scelerisque. Donec
-          consequat ultricies diam, ac accumsan lacus mollis a.
+          Qbytic is a collection of events ranging from programming, gaming,
+          hackathon to literature.
+        </p>
+        <p>
+          You can play as an individual or bring an entire team or as we like to
+          call it, a clan.
         </p>
       </div>
     </section>
@@ -46,16 +44,18 @@ function EventDetails(props: ThemeChangeProps): VNode {
       style={{ height: "500px", marginTop: "100px" }}
     >
       <div class="q-blue nexa bold heading">Event Details Here</div>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec orci sem,
-        laoreet dapibus ultricies sed, ultricies rutrum arcu. Proin gravida a
-        quam eget aliquet. Praesent bibendum risus vel lectus tempor feugiat.
-        Quisque eget ipsum et lectus convallis aliquam. Nam id tempor enim.
-        Vestibulum vel sapien ut erat convallis tempor. Nam in pulvinar purus.
-        Aenean mattis accumsan est id scelerisque. Praesent tincidunt eget nunc
-        nec venenatis. Praesent iaculis in est at scelerisque. Donec consequat
-        ultricies diam, ac accumsan lacus mollis a.
-      </p>
+      <div class="landing-answer">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec orci
+          sem, laoreet dapibus ultricies sed, ultricies rutrum arcu. Proin
+          gravida a quam eget aliquet. Praesent bibendum risus vel lectus tempor
+          feugiat. Quisque eget ipsum et lectus convallis aliquam. Nam id tempor
+          enim. Vestibulum vel sapien ut erat convallis tempor. Nam in pulvinar
+          purus. Aenean mattis accumsan est id scelerisque. Praesent tincidunt
+          eget nunc nec venenatis. Praesent iaculis in est at scelerisque. Donec
+          consequat ultricies diam, ac accumsan lacus mollis a.
+        </p>
+      </div>
     </section>
   );
 }
