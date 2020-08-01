@@ -5,7 +5,7 @@ import {
   useCallback,
 } from "@hydrophobefireman/ui-lib";
 import { useInterval, useMount } from "../../customHooks";
-import { Logo } from "../shared/Logo";
+import { Logo, SkipLogo } from "../shared/Logo";
 import * as store from "../../globalStore";
 import { ChevronDown } from "../shared/ChevronDown";
 import { LandingInfo } from "./LandingInfo";
@@ -33,42 +33,46 @@ export default function Landing(): VNode {
   if (stopAnim) return <MainLanding />;
   return (
     <div class="landing-logo-anim-wrapper">
-      <span class="landing-logo nexa fl-bold">Qbytic</span>
+      <span class="landing-logo nexa fl-bold" style={{ marginLeft: "20px" }}>
+        Qbytic
+      </span>
       {<span class="landing-logo nexa">|</span>}
       <div class="animating-text-wrap">
         {eventNames.map((x, i) => (
           <span class={cls + (i === index ? " anim-in" : "hide")}>{x}</span>
         ))}
       </div>
-      <button onClick={skipIntro} class="hoverable skip-intro">
-        Skip
-      </button>
+      <span onClick={skipIntro} class="hoverable skip-intro">
+        <SkipLogo size={10} />
+      </span>
     </div>
   );
 }
 function scrollToTopIfNeeded(): void {
   window.scrollY && window.scroll({ top: 0, behavior: "smooth" });
 }
-function scroll150() {
-  window.scroll({ top: window.scrollY + 100, behavior: "smooth" });
-}
+
 function MainLanding(): VNode {
   useMount(scrollToTopIfNeeded);
+  const [scrollIntoView, setScrollIntoView] = useState(null);
+  // use an object here instead of a boolean as we get a new value on every click
+  // causing the useEffect hook to run
+  const scrollLanding = useCallback(() => setScrollIntoView({}), []);
   return (
     <div>
       <div class="fade-in">
         <section class="logo-box">
-          <Logo size={100} />
-          <div class="landing-logo nexa fl-bold" style={{ fontSize: "5rem" }}>
+          <Logo size={150} />
+          <div class="landing-logo nexa fl-bold" style={{ fontSize: "8rem" }}>
             Qbytic
           </div>
           <div>
             <ActionButtons />
           </div>
         </section>
-        <ChevronDown wrapperClass="chevr" onClick={scroll150} />
+        <ChevronDown wrapperClass="chevr" onClick={scrollLanding} />
       </div>
-      <LandingInfo />
+      <LandingInfo scroll={scrollIntoView} />
     </div>
   );
 }

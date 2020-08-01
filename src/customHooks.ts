@@ -41,12 +41,12 @@ export const useQueryString: QueryStringHook = () =>
  * this can be used by our header components
  * that normally live outside of a <Router/>
  */
-const setPath = () => Router.path;
+const getPath = () => Router.path;
 export const useLocation = (): string => {
-  const [loc, setLoc] = useState(setPath);
+  const [loc, setLoc] = useState(getPath);
 
   useMount(() => {
-    const current = () => setLoc(setPath);
+    const current = () => setLoc(getPath);
     RouterSubscription.subscribe(current);
     return () => RouterSubscription.unsubscribe(current);
   });

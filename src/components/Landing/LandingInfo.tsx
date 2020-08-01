@@ -1,10 +1,18 @@
-import { useObserver, Themes, updateTheme } from "../../customHooks";
+import { useObserver, Themes, updateTheme, useMount } from "../../customHooks";
 import { useRef, useEffect, VNode } from "@hydrophobefireman/ui-lib";
 
-export function LandingInfo(): VNode {
-  useEffect(() => () => updateTheme("dark"), []);
+export function LandingInfo(props: { scroll: boolean }): VNode {
+  useMount(() => () => updateTheme("dark"));
+  const divRef = useRef<HTMLDivElement>();
+  useEffect(
+    () =>
+      props.scroll &&
+      divRef.current &&
+      divRef.current.scrollIntoView({ behavior: "smooth" }),
+    [props.scroll]
+  );
   return (
-    <div class="landing__info">
+    <div class="landing__info" ref={divRef}>
       <AboutQbytic changeTheme={updateTheme} />
       <EventDetails changeTheme={updateTheme} />
     </div>
