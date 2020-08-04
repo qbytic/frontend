@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@hydrophobefireman/j-utils": "^2.1.1",
-    "@hydrophobefireman/ui-lib": "^1.4.15"
+    "@hydrophobefireman/ui-lib": "^1.4.17"
   },
   "devDependencies": {
     "@babel/core": "^7.11.0",
@@ -49,7 +49,7 @@
     "postcss-loader": "^3.0.0",
     "style-ext-html-webpack-plugin": "^4.1.2",
     "terser": "^5.0.0",
-    "terser-webpack-plugin": "^3.0.8",
+    "terser-webpack-plugin": "^3.1.0",
     "typescript": "^3.9.7",
     "url-loader": "^4.1.0",
     "webpack": "^5.0.0-beta.20",
