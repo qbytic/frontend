@@ -103,7 +103,7 @@ function LinkRenderer(props: { active: boolean; onClick: EventListener }) {
       <div class={"link-wrapper" + (props.active ? "" : " out")}>
         {links.map(([text, url]) => (
           <A
-            class="header-link hoverable"
+            class="header-link hoverable qbytic-link"
             href={url}
             tabindex={props.active ? 0 : -1}
             onClick={props.onClick}

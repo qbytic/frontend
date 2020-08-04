@@ -105,8 +105,20 @@ button {
 }
 
 .qbytic-link {
-  text-decoration: underline;
-  color: var(--qbytic-blue);
-  font-weight: bold;
   display: inline-block;
+}
+.qbytic-link::after {
+  transition: 0.3s linear;
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  background: var(--qbytic-blue);
+  display: block;
+  content: "";
+  transition: 0.3s linear;
+  margin-top: calc(2px - 1rem);
+}
+.qbytic-link:hover::after {
+  transform: scaleX(1);
 }
