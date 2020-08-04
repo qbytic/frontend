@@ -1,5 +1,4 @@
 import { A } from "@hydrophobefireman/ui-lib";
-import { s } from "@hydrophobefireman/j-utils/@build-modern/src/modules/es6/loose/constants";
 
 interface LogoProps {
   size?: number;

@@ -8,7 +8,7 @@ import {
   useCallback,
   Router,
 } from "@hydrophobefireman/ui-lib";
-import { auth, UserData, ClanData } from "./http/auth";
+import { UserData } from "./http/auth";
 import * as store from "./globalStore";
 
 type QueryParams =

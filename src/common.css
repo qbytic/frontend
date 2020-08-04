@@ -41,7 +41,7 @@
   height: 100vh;
   top: 0;
   bottom: 0;
-  background-color: rgba(48, 48, 48, 0.8);
+  background-color: var(--mask-color);
   z-index: 5;
   position: fixed;
   width: 100vw;
@@ -102,4 +102,11 @@ button {
 
 .m-heading {
   margin-top: 50px;
+}
+
+.qbytic-link {
+  text-decoration: underline;
+  color: var(--qbytic-blue);
+  font-weight: bold;
+  display: inline-block;
 }

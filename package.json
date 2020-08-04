@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@hydrophobefireman/j-utils": "^2.1.1",
-    "@hydrophobefireman/ui-lib": "^1.4.14"
+    "@hydrophobefireman/ui-lib": "^1.4.15"
   },
   "devDependencies": {
     "@babel/core": "^7.11.0",
