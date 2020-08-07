@@ -21,6 +21,7 @@ interface InputProps extends Omit<JSXInternal.HTMLAttributes, "onInput"> {
 
 export function AnimatedInput(props: InputProps): VNode {
   const randomId = useMemo(() => "" + Math.random(), []);
+  
   const {
     id = randomId,
     onInput: propOnInput,
@@ -31,10 +32,12 @@ export function AnimatedInput(props: InputProps): VNode {
     $ref,
     ...rest
   } = props;
+
   const [isFocused, setFocused] = useState(false);
   const [value, setValue] = useState(props.value || "");
   const onFocus = useCallback(() => setFocused(true), []);
   const onBlur = useCallback(() => setFocused(false), []);
+  
   useEffect(() => setValue(props.value), [props.value]);
 
   function handleInput(e: InputEvent): void {
@@ -49,7 +52,7 @@ export function AnimatedInput(props: InputProps): VNode {
       <label
         class={[
           "_animate",
-          value || isFocused ? "moveup" : "movedown",
+          value || isFocused || errorText ? "moveup" : "movedown",
           errorText ? "error" : null,
         ]}
         for={id}

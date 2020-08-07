@@ -24,9 +24,6 @@ module.exports = {
         [
           "@babel/preset-env",
           {
-            exclude: ["@babel/plugin-transform-typeof-symbol"],
-            modules: false,
-            loose: true,
             corejs: 3,
             targets: ["last 2 versions", "not IE 11"],
             useBuiltIns: "usage",
