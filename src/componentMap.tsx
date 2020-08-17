@@ -25,7 +25,7 @@ function addRoute(route: string, component: () => Promise<ComponentType>) {
 
 const getDefault: <T>(mod: Mod<T>) => Mod<T>["default"] = (mod) => mod.default;
 
-addRoute("/", () => import("./components/Landing/Landing").then(getDefault));
+addRoute("/", () => import("./components/Landing/Landing").then(getDefault)) ;
 addRoute("/login", () => import("./components/Login/Login").then(getDefault));
 addRoute("/register", () =>
   import("./components/Register/Register").then(getDefault)

@@ -9,6 +9,65 @@ import { Logo, SkipLogo } from "../shared/Logo";
 import * as store from "../../globalStore";
 import { ChevronDown } from "../shared/ChevronDown";
 import { LandingInfo } from "./LandingInfo";
+import * as styles from "../../styles";
+import { css } from "catom";
+
+const landingLogo = css({
+  transition: "0.3s linear",
+  fontSize: "6rem",
+  media: {
+    "only screen and (max-width: 1100px)": { fontSize: " 3.5rem" },
+    "only screen and (max-width: 600px)": {
+      fontSize: "2.3rem",
+    },
+    "only screen and (max-width: 400px)": {
+      fontSize: "1.2rem",
+    },
+  } as any,
+});
+
+const animatingTextWrap = css({
+  display: "inline-flex",
+  flexDirection: "column",
+});
+
+const landingLogoAnimWrapper = css({
+  userSelect: "none",
+  display: "flex",
+  position: "fixed",
+  height: "100%",
+  width: "100%",
+  overflow: "hidden",
+  alignItems: "center",
+  justifyContent: "left",
+  top: "0",
+  padding: "2rem",
+});
+
+const skipIntroCSS = css({
+  bottom: "0",
+  position: "fixed",
+  right: "0",
+  margin: "1rem",
+  padding: "8px",
+  textAlign: "right",
+});
+const logoBox = css({ marginTop: "20vh" });
+
+const chevr = css({
+  position: "relative",
+  display: "block",
+  marginBottom: "40vh",
+  transform: "translateY(10vh)",
+  cursor: "pointer",
+});
+
+const animIn = css({ animation: "anim-in 0.1s linear" });
+
+const logoAnim = css({
+  animationFillMode: "forwards",
+  transition: "0.3s linear",
+});
 
 export default function Landing(): VNode {
   const eventNames = [
@@ -21,7 +80,9 @@ export default function Landing(): VNode {
     "hackathon",
     "Get Ready",
   ];
-  const cls = "landing-logo nexa fl-bold q-blue logo-anim ";
+  const cls = [styles.qBlue, styles.nexa, logoAnim, landingLogo]
+    .concat(" fl-bold")
+    .join(" ");
   const [index, setIndex] = useState(0);
   const stopAnim = index >= eventNames.length;
   useInterval(() => setIndex((i: number) => i + 1), stopAnim ? null : 600);
@@ -32,17 +93,22 @@ export default function Landing(): VNode {
 
   if (stopAnim) return <MainLanding />;
   return (
-    <div class="landing-logo-anim-wrapper">
-      <span class="landing-logo nexa fl-bold" style={{ marginLeft: "20px" }}>
+    <div class={landingLogoAnimWrapper}>
+      <span
+        class={[styles.nexa, landingLogo].concat("fl-bold")}
+        style={{ marginLeft: "20px" }}
+      >
         Qbytic
       </span>
-      {<span class="landing-logo nexa">|</span>}
-      <div class="animating-text-wrap">
+      {<span class={[styles.nexa, landingLogo]}>|</span>}
+      <div class={animatingTextWrap}>
         {eventNames.map((x, i) => (
-          <span class={cls + (i === index ? " anim-in" : "hide")}>{x}</span>
+          <span class={`${cls} ${i === index ? animIn : styles.hide}`}>
+            {x}
+          </span>
         ))}
       </div>
-      <span onClick={skipIntro} class="hoverable skip-intro">
+      <span onClick={skipIntro} class={[skipIntroCSS].concat("hoverable")}>
         <SkipLogo size={10} />
       </span>
     </div>
@@ -60,17 +126,20 @@ function MainLanding(): VNode {
   const scrollLanding = useCallback(() => setScrollIntoView({}), []);
   return (
     <div>
-      <div class="fade-in">
-        <section class="logo-box">
+      <div class={styles.fadeIn}>
+        <section class={logoBox}>
           <Logo size={150} />
-          <div class="landing-logo nexa fl-bold" style={{ fontSize: "8rem" }}>
+          <div
+            class={`${landingLogo} fl-bold ${styles.nexa}`}
+            style={{ fontSize: "8rem" }}
+          >
             Qbytic
           </div>
           <div>
             <ActionButtons />
           </div>
         </section>
-        <ChevronDown wrapperClass="chevr" onClick={scrollLanding} />
+        <ChevronDown wrapperClass={chevr} onClick={scrollLanding} />
       </div>
       <LandingInfo scroll={scrollIntoView} />
     </div>

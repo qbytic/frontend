@@ -1,6 +1,8 @@
 import { useObserver, Themes, updateTheme, useMount } from "../../customHooks";
 import { useRef, useEffect, VNode } from "@hydrophobefireman/ui-lib";
 import { DISCORD_SERVER_LINK } from "../../util/constants";
+import { css } from "catom";
+import * as styles from "../../styles";
 
 export function LandingInfo(props: { scroll: boolean }): VNode {
   useMount(() => () => updateTheme("dark"));
@@ -13,7 +15,7 @@ export function LandingInfo(props: { scroll: boolean }): VNode {
     [props.scroll]
   );
   return (
-    <div class="landing__info" ref={divRef}>
+    <div ref={divRef}>
       <AboutQbytic changeTheme={updateTheme} />
       <EventDetails />
     </div>
@@ -23,6 +25,11 @@ interface ThemeChangeProps {
   changeTheme(theme: Themes): void;
 }
 
+const landingSectionInfo = css({ padding: "2rem", textAlign: "left" });
+
+const landingAnswer = css({ fontSize: "1.3rem" });
+const headingCss = [styles.qBlue, styles.nexa, styles.bold, styles.heading];
+
 function AboutQbytic(props: ThemeChangeProps): VNode {
   const ref = useRef<HTMLElement>();
   const obs = useObserver(ref, 0.5);
@@ -30,9 +37,9 @@ function AboutQbytic(props: ThemeChangeProps): VNode {
     props.changeTheme(obs ? "light" : "dark");
   }, [obs]);
   return (
-    <section ref={ref} class="landing_section_info">
-      <div class="q-blue nexa bold heading">What is Qbytic</div>
-      <div class="landing-answer">
+    <section ref={ref} class={landingSectionInfo}>
+      <div class={headingCss}>What is Qbytic</div>
+      <div class={landingAnswer}>
         <div>
           Qbytic is a collection of events ranging from programming, gaming,
           hackathon to literature.
@@ -44,7 +51,7 @@ function AboutQbytic(props: ThemeChangeProps): VNode {
         <div>
           {"The prizes are to be announced, be sure to join our "}
           <a
-            class="qbytic-link hoverable bold"
+            class={"qbytic-link hoverable " + styles.bold}
             title="Qbytic Discord"
             aria-label="Qbytic Discord"
             rel="noreferrer"
@@ -69,11 +76,11 @@ function AboutQbytic(props: ThemeChangeProps): VNode {
 function EventDetails(): VNode {
   return (
     <section
-      class="landing_section_info"
+      class={landingSectionInfo}
       style={{ height: "500px", marginTop: "100px" }}
     >
-      <div class="q-blue nexa bold heading">Event Details</div>
-      <div class="landing-answer">
+      <div class={headingCss}>Event Details</div>
+      <div class={landingAnswer}>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec orci
           sem, laoreet dapibus ultricies sed, ultricies rutrum arcu. Proin

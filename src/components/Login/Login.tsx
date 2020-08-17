@@ -1,6 +1,6 @@
 import * as store from "../../globalStore";
 import * as validators from "../../util/validators";
-
+import * as styles from "../../styles";
 import {
   VNode,
   redirect,
@@ -46,7 +46,17 @@ export default function Login(): VNode {
           onClose={closePopup}
         />
       )}
-      <div class="heading nexa bold upper m-heading">Login</div>
+      <div
+        class={[
+          styles.heading,
+          styles.bold,
+          styles.nexa,
+          styles.upper,
+          styles.mHeading,
+        ]}
+      >
+        Login
+      </div>
       <LoginInputRenderer login={authenticate} focus={!loginError} />
       {isLoading && <div>Connecting to the server</div>}
     </section>
@@ -98,20 +108,20 @@ function LoginInputRenderer(props: InputRendererProps) {
   return (
     <form action="javascript:" onSubmit={onSubmit}>
       <AnimatedInput
-        wrapperClass="form-inp-wrapper"
+        wrapperClass={styles.formInpWrapper}
         onInput={onUserInput}
         labelText="Username"
-        inputClass="form-inp"
+        inputClass={styles.formInp}
         aria-label="username"
         spellcheck={false}
         $ref={inputRef}
         errorText={isFormValid ? null : userError}
       />
       <AnimatedInput
-        wrapperClass="form-inp-wrapper"
+        wrapperClass={styles.formInpWrapper}
         onInput={onPasswordInput}
         labelText="Password"
-        inputClass="form-inp"
+        inputClass={styles.formInp}
         aria-label="Password"
         errorText={isFormValid ? null : passwordError}
         type="password"

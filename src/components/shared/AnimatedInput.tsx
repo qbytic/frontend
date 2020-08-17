@@ -6,6 +6,52 @@ import {
   JSXInternal,
   useEffect,
 } from "@hydrophobefireman/ui-lib";
+import { css } from "catom";
+
+const animateCSS = css({
+  margin: "auto",
+  textAlign: "left",
+  fontWeight: 700,
+  textTransform: "uppercase",
+  width: "auto;width:fit-content;",
+  paddingLeft: "4px",
+  paddingRight: "4px",
+  display: "inline-flex",
+  flexWrap: "wrap",
+  userSelect: "none",
+  transform: "var(--translate-normal-pos)",
+  pointerEvents: "none",
+  fontSize: "1.3rem",
+  transition: "0.3s linear",
+});
+
+const moveUp = css({
+  animation: "moveUp 0.1s linear 0s 1  normal  forwards",
+  animationIterationCount: "1",
+  transformOrigin: "50% 50%",
+});
+
+const moveDown = css({
+  animation: "moveDown 0.1s linear 0s 1  normal  forwards",
+  animationIterationCount: "1",
+  transformOrigin: "50% 50%",
+});
+
+const paperInput = css({
+  display: "block",
+  width: "80%",
+  fontSize: "1.2rem",
+  padding: "5px",
+  outline: "0",
+  height: "30px",
+  transition: "0.1s cubic-bezier(0.46, 1, 0.74, 1.07)",
+  color: "var(--input-color)",
+  fontWeight: 700,
+  margin: "auto",
+  textAlign: "left",
+});
+
+const errorCss = css({ color: "red !important" });
 
 interface InputProps extends Omit<JSXInternal.HTMLAttributes, "onInput"> {
   id?: string;
@@ -21,7 +67,7 @@ interface InputProps extends Omit<JSXInternal.HTMLAttributes, "onInput"> {
 
 export function AnimatedInput(props: InputProps): VNode {
   const randomId = useMemo(() => "" + Math.random(), []);
-  
+
   const {
     id = randomId,
     onInput: propOnInput,
@@ -37,7 +83,7 @@ export function AnimatedInput(props: InputProps): VNode {
   const [value, setValue] = useState(props.value || "");
   const onFocus = useCallback(() => setFocused(true), []);
   const onBlur = useCallback(() => setFocused(false), []);
-  
+
   useEffect(() => setValue(props.value), [props.value]);
 
   function handleInput(e: InputEvent): void {
@@ -50,11 +96,10 @@ export function AnimatedInput(props: InputProps): VNode {
   return (
     <div class={["inp_wrapper"].concat(wrapperClass)}>
       <label
-        class={[
-          "_animate",
-          value || isFocused || errorText ? "moveup" : "movedown",
-          errorText ? "error" : null,
-        ]}
+        class={[animateCSS].concat(
+          value || isFocused || errorText ? moveUp : moveDown,
+          [errorText ? errorCss : null]
+        )}
         for={id}
       >
         {errorText || labelText}
@@ -65,7 +110,7 @@ export function AnimatedInput(props: InputProps): VNode {
         onInput={onInput}
         id={id}
         value={value}
-        class={["paper-input"].concat(inputClass)}
+        class={[paperInput].concat(inputClass)}
         ref={$ref}
         {...rest}
       />

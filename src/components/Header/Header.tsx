@@ -1,12 +1,66 @@
-import { useState, useCallback, A } from "@hydrophobefireman/ui-lib";
+import * as styles from "../../styles";
+
+import { A, useCallback, useState } from "@hydrophobefireman/ui-lib";
 import {
   useAuthenticationState,
-  useLocation,
   useKeyPress,
+  useLocation,
   useViewportSize,
 } from "../../customHooks";
-import { Logo } from "../shared/Logo";
+
 import { DISCORD_SERVER_LINK } from "../../util/constants";
+import { Logo } from "../shared/Logo";
+import { css } from "catom";
+
+const menuBtn = css({
+  background: "none",
+  outline: "none",
+  border: "none",
+  display: "block",
+  marginLeft: "auto",
+});
+
+const linkWrapper = css({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "flex-end",
+  position: "fixed",
+  right: "0",
+  zIndex: 12,
+  padding: "8px",
+  marginRight: "16px",
+  userSelect: "none",
+  transition: "0.3s linear",
+});
+const out = css({ transform: "translateX(300px)" });
+
+const headerNav = css({
+  flex: "1",
+  justifyContent: "flex-end",
+  position: "fixed",
+  marginRight: "5px",
+  marginTop: "10px",
+  right: "0",
+  top: "0",
+});
+
+const headerLink = css({
+  fontSize: "1.3rem",
+  color: "var(--current-color)",
+  outline: "none",
+});
+const linkHome = css({ marginLeft: "10px", flex: "1", textAlign: "left" });
+const linkHomeMob = css({
+  fontSize: "2rem",
+  fontWeight: "bold",
+  borderBottom: "2px solid var(--qbytic-blue)",
+});
+
+const socialLogo = css({
+  display: "block",
+  marginLeft: "5px",
+  marginRight: "5px",
+});
 
 export function Header() {
   const [isActive, setIsActive] = useState(false);
@@ -15,7 +69,7 @@ export function Header() {
   return (
     <header>
       {route !== "/" && <LinkHome />}
-      <nav class="header-nav">
+      <nav class={headerNav}>
         <MenuButton onClick={onClick} active={isActive} />
         {<LinkRenderer onClick={onClick} active={isActive} />}
       </nav>
@@ -26,11 +80,11 @@ function LinkHome() {
   const [, width] = useViewportSize();
   const mobileLayout = width <= 600;
   return mobileLayout ? (
-    <A href="/" class="center nexa link-home-mob">
+    <A href="/" class={[styles.center, styles.nexa, linkHomeMob]}>
       Qbytic
     </A>
   ) : (
-    <div class="link-home">
+    <div class={linkHome}>
       <Logo />
     </div>
   );
@@ -38,7 +92,7 @@ function LinkHome() {
 export function MenuButton(props: { onClick: EventListener; active: boolean }) {
   return (
     <button
-      class="hoverable menubtn"
+      class={"hoverable " + menuBtn}
       onClick={props.onClick}
       tabindex={0}
       title="menu"
@@ -46,7 +100,6 @@ export function MenuButton(props: { onClick: EventListener; active: boolean }) {
     >
       <div>
         <svg
-          class="menu-btn-svg"
           width="24"
           height="24"
           viewBox="0 0 24 24"
@@ -99,11 +152,11 @@ function LinkRenderer(props: { active: boolean; onClick: EventListener }) {
 
   return (
     <>
-      {props.active && <div class="mask" onClick={props.onClick} />}
-      <div class={"link-wrapper" + (props.active ? "" : " out")}>
+      {props.active && <div class={styles.mask} onClick={props.onClick} />}
+      <div class={`${linkWrapper} ${props.active ? "" : out}`}>
         {links.map(([text, url]) => (
           <A
-            class="header-link hoverable qbytic-link"
+            class={[headerLink, "hoverable qbytic-link"]}
             href={url}
             tabindex={props.active ? 0 : -1}
             onClick={props.onClick}
@@ -120,6 +173,7 @@ function LinkRenderer(props: { active: boolean; onClick: EventListener }) {
 function SocialLinks({ active }: { active: boolean }) {
   const dimensions = 30;
   const size = { height: dimensions, width: dimensions };
+  const cls = "hoverable " + socialLogo;
   return (
     <div
       style={{
@@ -132,7 +186,7 @@ function SocialLinks({ active }: { active: boolean }) {
         rel="noreferrer"
         target="_blank"
         aria-label="Qbytic Github"
-        class="hoverable social-logo"
+        class={cls}
         tabindex={active ? 0 : -1}
       >
         <svg viewBox="0 0 24 24" {...size}>
@@ -148,7 +202,7 @@ function SocialLinks({ active }: { active: boolean }) {
         target="_blank"
         href={DISCORD_SERVER_LINK}
         aria-label="Qbytic Discord"
-        class="hoverable social-logo"
+        class={cls}
         tabindex={active ? 0 : -1}
       >
         <svg viewBox="0 0 245 240" fill="var(--current-color)" {...size}>

@@ -1,15 +1,17 @@
-import {
-  useMemo,
-  loadURL,
-  RouterSubscription,
-  useEffect,
-  useState,
-  useRef,
-  useCallback,
-  Router,
-} from "@hydrophobefireman/ui-lib";
-import { UserData } from "./http/auth";
 import * as store from "./globalStore";
+
+import {
+  Router,
+  RouterSubscription,
+  loadURL,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "@hydrophobefireman/ui-lib";
+
+import { UserData } from "./http/auth";
 
 type QueryParams =
   | string[][]

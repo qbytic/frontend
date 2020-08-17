@@ -23,6 +23,10 @@
     <script data-js="touch-intent-css-fix">
       <%= require("./injectables/css-fix.js") %>
     </script>
+    <style>
+      <%= htmlWebpackPlugin.options.css %>
+      /***/
+    </style>
     <base href="/" />
   </head>
   <body>
