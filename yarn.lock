@@ -1735,11 +1735,13 @@ caniuse-lite@^1.0.30001109:
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001109.tgz#a9f3f26a0c3753b063d7acbb48dfb9c0e46f2b19"
   integrity sha512-4JIXRodHzdS3HdK8nSgIqXYLExOvG+D2/EenSvcub2Kp3QEADjo2v2oUn5g0n0D+UNwG9BtwKOyGcSq2qvQXvQ==
 
-catom@^0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/catom/-/catom-0.1.4.tgz#5f52b0a84fcf400ec36e9fbbc5f3df5d847a5e83"
-  integrity sha512-kMqonYMjnYu4XNctouztZ+mS7TQ0C8xFVjKzVqdyiI9AxahQ4xKW82JW6Zuv8l9VecWA93LkSX+HnDrXmrep2Q==
+catom@^0.1.12:
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/catom/-/catom-0.1.12.tgz#eb8d42c8e1e1d725d6cccbeb3d1055c5f14f9d4a"
+  integrity sha512-4o+EtoudwVhLXLFhHD+ayj9Pg6U7CBYRy8WfSa6vDS5HYlaA2o/R+Rv33y1Ogd1aCzzAPzqUDt+F98UoReHPcA==
   dependencies:
+    "@babel/template" "^7.10.4"
+    "@babel/traverse" "^7.11.0"
     csstype "^3.0.2"
 
 chalk@^2.0.0, chalk@^2.0.1, chalk@^2.4.1, chalk@^2.4.2:
@@ -5777,10 +5779,10 @@ terser@^5.0.0:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
-terser@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/terser/-/terser-5.1.0.tgz#1f4ab81c8619654fdded51f3157b001e1747281d"
-  integrity sha512-pwC1Jbzahz1ZPU87NQ8B3g5pKbhyJSiHih4gLH6WZiPU8mmS1IlGbB0A2Nuvkj/LCNsgIKctg6GkYwWCeTvXZQ==
+terser@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/terser/-/terser-5.2.0.tgz#e547d0b20926b321d3e524bf9e5bc1b10ba2f360"
+  integrity sha512-nZ9TWhBznZdlww3borgJyfQDrxzpgd0RlRNoxR63tMVry01lIH/zKQDTTiaWRMGowydfvSHMgyiGyn6A9PSkCQ==
   dependencies:
     commander "^2.20.0"
     source-map "~0.6.1"

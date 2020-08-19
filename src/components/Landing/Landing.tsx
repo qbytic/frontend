@@ -69,6 +69,15 @@ const logoAnim = css({
   transition: "0.3s linear",
 });
 
+const flBold = css({
+  pseudo: {
+    "::first-letter": {
+      fontWeight: "bold",
+      textTransform: "capitalize",
+    },
+  },
+});
+
 export default function Landing(): VNode {
   const eventNames = [
     "flikkx",
@@ -80,9 +89,9 @@ export default function Landing(): VNode {
     "hackathon",
     "Get Ready",
   ];
-  const cls = [styles.qBlue, styles.nexa, logoAnim, landingLogo]
-    .concat(" fl-bold")
-    .join(" ");
+  const cls = [styles.qBlue, styles.nexa, logoAnim, landingLogo, flBold].join(
+    " "
+  );
   const [index, setIndex] = useState(0);
   const stopAnim = index >= eventNames.length;
   useInterval(() => setIndex((i: number) => i + 1), stopAnim ? null : 600);
@@ -95,7 +104,7 @@ export default function Landing(): VNode {
   return (
     <div class={landingLogoAnimWrapper}>
       <span
-        class={[styles.nexa, landingLogo].concat("fl-bold")}
+        class={[styles.nexa, landingLogo, flBold]}
         style={{ marginLeft: "20px" }}
       >
         Qbytic
@@ -108,7 +117,7 @@ export default function Landing(): VNode {
           </span>
         ))}
       </div>
-      <span onClick={skipIntro} class={[skipIntroCSS].concat("hoverable")}>
+      <span onClick={skipIntro} class={[skipIntroCSS, styles.hoverable]}>
         <SkipLogo size={10} />
       </span>
     </div>
@@ -130,7 +139,7 @@ function MainLanding(): VNode {
         <section class={logoBox}>
           <Logo size={150} />
           <div
-            class={`${landingLogo} fl-bold ${styles.nexa}`}
+            class={`${landingLogo} ${flBold} ${styles.nexa}`}
             style={{ fontSize: "8rem" }}
           >
             Qbytic

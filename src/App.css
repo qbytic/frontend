@@ -30,16 +30,6 @@ body.light {
   margin: auto;
   text-align: center;
 }
-.hoverable:not([disabled]) {
-  cursor: pointer;
-  transition: 0.3s ease-in-out;
-  transform-style: preserve-3d;
-}
-.hoverable:active:not([disabled]),
-.hoverable:focus:not([disabled]),
-.hoverable:hover:not([disabled]) {
-  transform: perspective(1px) scale(1.048) translateZ(0);
-}
 
 a {
   color: var(--current-color);
@@ -55,21 +45,6 @@ a {
   }
 }
 
-.action-btn {
-  margin-top: 10px;
-  width: 10rem;
-  height: 2rem;
-  border-radius: 5px;
-  outline: none;
-  border: 2px solid var(--qbytic-blue);
-  background: var(--current-bg);
-  color: var(--current-color);
-}
-
-.action-btn:hover {
-  filter: grayscale(1);
-}
-
 @keyframes scale_anim {
   0% {
     transform: scale(0.01);
@@ -81,24 +56,4 @@ a {
 button {
   color: inherit;
   background: var(--background-color);
-}
-
-
-.qbytic-link {
-  display: inline-block;
-}
-.qbytic-link::after {
-  transition: 0.3s linear;
-  position: absolute;
-  width: 100%;
-  transform: scaleX(0);
-  height: 2px;
-  background: var(--qbytic-blue);
-  display: block;
-  content: "";
-  transition: 0.3s linear;
-  margin-top: calc(2px - 1rem);
-}
-.qbytic-link:hover::after {
-  transform: scaleX(1);
 }

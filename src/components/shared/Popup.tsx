@@ -65,7 +65,7 @@ export function Popup(props: PopupProps) {
         </div>
         <button
           ref={buttonRef}
-          class={`${appPopopClose} hoverable`}
+          class={[appPopopClose, styles.hoverable]}
           onClick={props.onClose}
         >
           OK

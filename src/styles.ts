@@ -54,3 +54,54 @@ export const formInpWrapper = css({ width: "60%", margin: "auto" });
 export const upper = css({ textTransform: "uppercase" });
 
 export const mHeading = css({ marginTop: "50px" });
+
+export const hoverable = css({
+  pseudo: {
+    ":not([disabled])": {
+      cursor: "pointer",
+      transition: "0.3s ease-in-out",
+      transformStyle: "preserve-3d",
+    },
+    ":active:not([disabled])": {
+      transform: "perspective(1px) scale(1.048) translateZ(0)",
+    },
+    ":focus:not([disabled])": {
+      transform: "perspective(1px) scale(1.048) translateZ(0)",
+    },
+    ":hover:not([disabled])": {
+      transform: "perspective(1px) scale(1.048) translateZ(0)",
+    },
+  },
+});
+
+export const qbyticLink = css({
+  display: "inline-block",
+  pseudo: {
+    "::after": {
+      transition: "0.3s linear",
+      position: "absolute",
+      width: "100%",
+      transform: "scaleX(0)",
+      height: "2px",
+      background: "var(--qbytic-blue)",
+      display: "block",
+      content: '""',
+      marginTop: "calc(2px - 1rem)",
+    },
+    ":hover::after": { transform: "scaleX(1)" },
+  },
+});
+
+export const actionBtn = css({
+  marginTop: "10px",
+  width: "10rem",
+  height: "2rem",
+  borderRadius: "5px",
+  outline: "none",
+  border: "2px solid var(--qbytic-blue)",
+  background: "var(--current-bg)",
+  color: "var(--current-color)",
+  pseudo: {
+    ":hover": { filter: "grayscale(1)" },
+  },
+});

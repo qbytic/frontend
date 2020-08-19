@@ -4,12 +4,11 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const autoPrefixPlugin = require("autoprefixer");
 const HTMLInlineCSSWebpackPlugin = require("html-inline-css-webpack-plugin")
   .default;
-const { emitCSS, AtomicCssWebpackPlugin } = require("catom/dist/webpackPlugin");
-const { autoPrefixCSS } = require("catom/dist/postCSS");
+
 const WebpackModuleNoModulePlugin = require("webpack-module-nomodule-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const cfg = require("./.babelrc");
-
+const { autoPrefixCSS } = require("catom/dist/css");
 const { basename } = require("path");
 
 const isProd = basename(__filename).includes(".prod");
@@ -45,7 +44,7 @@ const contentLoaderOptions = {
   test: /\.(png|jpg|gif|ico|svg)$/,
   use: [{ loader: "url-loader", options: { fallback: "file-loader" } }],
 };
-const catomPlugin = new AtomicCssWebpackPlugin();
+
 function getCfg(isLegacy) {
   return {
     cache: {
@@ -90,7 +89,7 @@ function getCfg(isLegacy) {
           assetTags,
           options
         ) {
-          const css = await autoPrefixCSS(emitCSS());
+          const css = await autoPrefixCSS();
           return {
             compilation: compilation,
             webpackConfig: compilation.options,
@@ -119,7 +118,7 @@ function getCfg(isLegacy) {
           !1
         ),
       }),
-      catomPlugin,
+
       new MiniCssExtractPlugin({}),
       isProd &&
         new OptimizeCSSAssetsPlugin({ cssProcessor: require("cssnano") }),

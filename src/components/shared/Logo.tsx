@@ -1,5 +1,5 @@
 import { A } from "@hydrophobefireman/ui-lib";
-
+import * as styles from "../../styles";
 interface LogoProps {
   size?: number;
   class?: string;
@@ -8,7 +8,10 @@ export function Logo(props: LogoProps) {
   const size = props.size || "100";
 
   return (
-    <A href="/" class={["hoverable", "qbytic-logo"].concat(props.class)}>
+    <A
+      href="/"
+      class={[styles.hoverable, styles.qbyticLogo].concat(props.class)}
+    >
       <svg viewBox="0 0 257.25 257.25" height={size} width={size}>
         <defs>
           <linearGradient

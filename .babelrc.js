@@ -1,4 +1,5 @@
 const plugins = [
+  "catom/dist/babelPlugin",
   "@babel/plugin-proposal-class-properties",
   "@babel/plugin-syntax-dynamic-import",
 

@@ -92,7 +92,7 @@ function LinkHome() {
 export function MenuButton(props: { onClick: EventListener; active: boolean }) {
   return (
     <button
-      class={"hoverable " + menuBtn}
+      class={`${styles.hoverable} ${menuBtn}`}
       onClick={props.onClick}
       tabindex={0}
       title="menu"
@@ -156,7 +156,7 @@ function LinkRenderer(props: { active: boolean; onClick: EventListener }) {
       <div class={`${linkWrapper} ${props.active ? "" : out}`}>
         {links.map(([text, url]) => (
           <A
-            class={[headerLink, "hoverable qbytic-link"]}
+            class={[headerLink, styles.hoverable, styles.qbyticLink]}
             href={url}
             tabindex={props.active ? 0 : -1}
             onClick={props.onClick}
@@ -173,7 +173,7 @@ function LinkRenderer(props: { active: boolean; onClick: EventListener }) {
 function SocialLinks({ active }: { active: boolean }) {
   const dimensions = 30;
   const size = { height: dimensions, width: dimensions };
-  const cls = "hoverable " + socialLogo;
+  const cls = `${styles.hoverable} ${socialLogo}`;
   return (
     <div
       style={{

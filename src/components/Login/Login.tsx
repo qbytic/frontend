@@ -1,6 +1,6 @@
 import * as store from "../../globalStore";
 import * as validators from "../../util/validators";
-import * as styles from "../../styles";
+
 import {
   VNode,
   redirect,
@@ -13,7 +13,7 @@ import { useAuthenticationState, useInputFocus } from "../../customHooks";
 import { AnimatedInput } from "../shared/AnimatedInput";
 import { Popup } from "../shared/Popup";
 import { auth } from "../../http/auth";
-
+import * as styles from "../../styles";
 export default function Login(): VNode {
   const authState = useAuthenticationState();
   useEffect(() => authState && authState.user && redirect("/dashboard"), [
@@ -126,7 +126,7 @@ function LoginInputRenderer(props: InputRendererProps) {
         errorText={isFormValid ? null : passwordError}
         type="password"
       />
-      <button class="action-btn hoverable">Log In</button>
+      <button class={[styles.hoverable, styles.actionBtn]}>Log In</button>
     </form>
   );
 }

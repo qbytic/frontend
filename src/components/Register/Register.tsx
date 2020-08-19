@@ -10,6 +10,7 @@ import * as validators from "../../util/validators";
 import { AnimatedInput } from "../shared/AnimatedInput";
 import * as requests from "../../http/requests";
 import { userRoutes } from "../../util/api_routes";
+import * as styles from "../../styles";
 export default function Register(): VNode {
   const [registerError, setRegisterError] = useState<string>(null);
 
@@ -152,7 +153,7 @@ function RegisterInputRenderer(props: RegRendererProps) {
         errorText={isFormValid ? null : passwordError}
         type="password"
       />
-      <button class="action-btn hoverable">Log In</button>
+      <button class={[styles.hoverable, styles.actionBtn]}>Log In</button>
     </form>
   );
 }
