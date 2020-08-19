@@ -51,7 +51,7 @@ function AboutQbytic(props: ThemeChangeProps): VNode {
         <div>
           {"The prizes are to be announced, be sure to join our "}
           <a
-            class={"qbytic-link hoverable " + styles.bold}
+            class={[styles.hoverable, styles.qbyticLink, styles.bold]}
             title="Qbytic Discord"
             aria-label="Qbytic Discord"
             rel="noreferrer"
