@@ -1,6 +1,6 @@
 html {
   --translate-normal-pos: translate(1%, 100%);
-  --translate-up: translate(1%, 10%);
+  --translate-up: translateY(12px);
 }
 
 @keyframes moveUp {

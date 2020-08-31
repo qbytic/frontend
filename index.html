@@ -5,23 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Events and competitions" />
     <title>Qbytic</title>
-    <link rel="preconnect" href="https://fonts.pycode.tk" crossorigin />
-    <link rel="preload" href="https://fonts.pycode.tk/nexa.css" as="style" />
-    <link rel="preload" href="https://fonts.pycode.tk/nats.css" as="style" />
+    <link rel="preconnect" href="https://pfonts.vercel.app/" crossorigin />
+    <link rel="preload" href="https://pfonts.vercel.app/nexa.css" as="style" />
+    <link rel="preload" href="https://pfonts.vercel.app/nats.css" as="style" />
     <link
       rel="stylesheet"
-      href="https://fonts.pycode.tk/nexa.css"
+      href="https://pfonts.vercel.app/nexa.css"
       media="print"
       onload="this.media='all'"
     />
     <link
       rel="stylesheet"
-      href="https://fonts.pycode.tk/nats.css"
+      href="https://pfonts.vercel.app/nats.css"
       media="print"
       onload="this.media='all'"
     />
     <script data-js="touch-intent-css-fix">
-      <%= require("./injectables/css-fix.js") %>
+      <%= htmlWebpackPlugin.options.touchIntentCSS %>
     </script>
     <style>
       <%= htmlWebpackPlugin.options.css %>

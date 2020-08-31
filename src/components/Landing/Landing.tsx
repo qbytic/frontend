@@ -3,6 +3,7 @@ import {
   useState,
   useEffect,
   useCallback,
+  useRef,
 } from "@hydrophobefireman/ui-lib";
 import { useInterval, useMount } from "../../customHooks";
 import { Logo, SkipLogo } from "../shared/Logo";
@@ -25,6 +26,11 @@ const landingLogo = css({
     },
   } as any,
 });
+const inactiveLogo = css({
+  transform: "scale(0.9)",
+  pointerEvents: "none",
+  userSelect: "none",
+});
 
 const animatingTextWrap = css({
   display: "inline-flex",
@@ -36,6 +42,7 @@ const landingLogoAnimWrapper = css({
   display: "flex",
   position: "fixed",
   height: "100%",
+  zIndex: "-1" as any,
   width: "100%",
   overflow: "hidden",
   alignItems: "center",
@@ -52,7 +59,12 @@ const skipIntroCSS = css({
   padding: "8px",
   textAlign: "right",
 });
-const logoBox = css({ marginTop: "20vh" });
+const logoBox = css({
+  top: "20vh",
+  height: "100vh",
+  position: "sticky",
+  transition: "transform 0.3s linear",
+});
 
 const chevr = css({
   position: "relative",
@@ -77,6 +89,7 @@ const flBold = css({
     },
   },
 });
+const qByticCenterText = css({ transition: "0s" });
 
 export default function Landing(): VNode {
   const eventNames = [
@@ -133,25 +146,49 @@ function MainLanding(): VNode {
   // use an object here instead of a boolean as we get a new value on every click
   // causing the useEffect hook to run
   const scrollLanding = useCallback(() => setScrollIntoView({}), []);
+  const container = useRef<HTMLElement>();
+  const threshold = useRef<number>();
+  const [opacity, setOpacity] = useState(1);
+  useMount(() => {
+    const listener = () => {
+      const current = container.current;
+      if (current) {
+        const init = threshold.current;
+        const top = window.scrollY;
+        if (init == null) {
+          const rect = current.getBoundingClientRect();
+          threshold.current = rect.height * 0.65;
+          return;
+        }
+        setOpacity(+Math.max((init - top) / init, 0).toFixed(2));
+      }
+    };
+    addEventListener("scroll", listener, { passive: true });
+    return () => removeEventListener("scroll", listener);
+  });
+  const inactive = opacity < 0.5;
+
   return (
-    <div>
-      <div class={styles.fadeIn}>
-        <section class={logoBox}>
+    <>
+      <div
+        class={[styles.fadeIn, logoBox, inactive ? inactiveLogo : ""]}
+        style={{ opacity }}
+        ref={container}
+      >
+        <section>
           <Logo size={150} />
           <div
-            class={`${landingLogo} ${flBold} ${styles.nexa}`}
+            class={`${landingLogo} ${flBold} ${styles.nexa} ${qByticCenterText}`}
             style={{ fontSize: "8rem" }}
           >
             Qbytic
           </div>
-          <div>
-            <ActionButtons />
-          </div>
+          <ActionButtons />
         </section>
         <ChevronDown wrapperClass={chevr} onClick={scrollLanding} />
       </div>
       <LandingInfo scroll={scrollIntoView} />
-    </div>
+    </>
   );
 }
 

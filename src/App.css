@@ -1,7 +1,7 @@
 html {
   -webkit-tap-highlight-color: transparent;
-  --background-dark: #000;
-  --background-light: #fff;
+  --background-dark: #1c1c1c;
+  --background-light: #fafafa;
   --qbytic-blue: #4dc5c9;
   --input-color: #4e4e4e;
   --header-font-family: "nexa";

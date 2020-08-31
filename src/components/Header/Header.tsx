@@ -62,12 +62,21 @@ const socialLogo = css({
   marginRight: "5px",
 });
 
+const headerCSS = css({
+  position: "sticky",
+  top: "0",
+  padding: "8px",
+  display: "flex",
+  flexDirection: "row",
+  zIndex: 1,
+});
+
 export function Header() {
   const [isActive, setIsActive] = useState(false);
   const route = useLocation();
   const onClick = useCallback(() => setIsActive((isActive) => !isActive), []);
   return (
-    <header>
+    <header class={headerCSS}>
       {route !== "/" && <LinkHome />}
       <nav class={headerNav}>
         <MenuButton onClick={onClick} active={isActive} />
@@ -98,26 +107,24 @@ export function MenuButton(props: { onClick: EventListener; active: boolean }) {
       title="menu"
       aria-label="menu"
     >
-      <div>
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="var(--current-color)"
-          fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path
-            d={
-              props.active
-                ? "M18 6L6 18M6 6l12 12"
-                : "M4 6h 161M10 12h 10M6 18h45"
-            }
-          />
-        </svg>
-      </div>
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="var(--current-color)"
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path
+          d={
+            props.active
+              ? "M18 6L6 18M6 6l12 12"
+              : "M4 6h 161M10 12h 10M6 18h45"
+          }
+        />
+      </svg>
     </button>
   );
 }

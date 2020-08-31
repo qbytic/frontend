@@ -1,80 +1,95 @@
-import { useRef, useEffect, VNode } from "@hydrophobefireman/ui-lib";
+import {
+  useRef,
+  useEffect,
+  VNode,
+  useCallback,
+} from "@hydrophobefireman/ui-lib";
 import { useKeyPress } from "../../customHooks";
 import * as styles from "../../styles";
 import { css } from "catom";
-const appPopupTitle = css({
-  marginTop: "10px",
-  borderBottom: "2px solid var(--current-color)",
-  fontSize: "1.5rem",
-  color: "var(--qbytic-blue)",
-});
+
+// const appPopupTitle = css({
+//   marginTop: "10px",
+//   borderBottom: "2px solid var(--current-color)",
+//   fontSize: "1.5rem",
+//   color: "var(--qbytic-blue)",
+// });
 
 const appPopopClose = css({
-  display: "block",
-  bottom: "0",
-  zIndex: 100,
-  textAlign: "center",
-  left: "0",
-  right: "0",
-  border: "1px solid var(--current-color)",
-  margin: "auto auto 10px",
-  borderRadius: "5px",
+  border: "none",
+  fontWeight: "bold",
+  color: "var(--qbytic-blue)",
   cursor: "pointer",
-  width: "50%",
-  color: "var(--current-color)",
-  padding: "5px",
+  outline: "none",
 });
 
 const modalPopup = css({
-  width: "40vw",
-  border: "2px solid var(--current-color)",
-  margin: "auto",
+  width: "90%",
+  position: "fixed",
+  bottom: "10px",
   left: "0",
   right: "0",
-  top: "0",
-  transform: "scale(0.01)",
-  bottom: "0",
-  borderRadius: "16px",
-  textAlign: "center",
-  overflow: "auto",
-  zIndex: 25,
-  background: "var(--current-bg)",
-  WebkitAnimation: "scale_anim 0.2s linear",
-  animation: "scale_anim 0.2s linear",
-  WebkitAnimationFillMode: "forwards",
-  animationFillMode: "forwards",
+  margin: "auto",
+  borderRadius: "5px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  padding: "10px",
+  background: "#000",
+  fontSize: "1.2rem",
+  zIndex: 100,
+  transition: "0.35s linear",
+
+  color: "#fff",
+  media: {
+    "only screen and (min-width:850px)": { width: "50%" },
+  },
 });
 
+const modalInactive = css({
+  transform: "translateY(35vh)",
+  pointerEvents: "none",
+});
 interface PopupProps {
-  title: string;
   text: string | VNode;
-  onClose(): void;
+  onClose(e?: MouseEvent): void;
 }
-export function Popup(props: PopupProps) {
+export function SnackBar(props: PopupProps) {
+  const { onClose, text } = props;
   const buttonRef = useRef<HTMLButtonElement>();
-  useKeyPress("Escape", props.onClose);
+  useKeyPress("Escape", onClose);
   useEffect(() => buttonRef.current && buttonRef.current.focus(), []);
+  const currentTargetOnly = useCallback(
+    (e: MouseEvent) => {
+      const { target, currentTarget } = e;
+      if (target !== currentTarget) return;
+      return onClose(e);
+    },
+    [onClose]
+  );
+  const active = !!text;
   return (
-    <div class={styles.mask} onClick={props.onClose}>
-      <section class={modalPopup} onClick={stopPropagation}>
-        <div class={[styles.heading, styles.qBlue, appPopupTitle]}>
-          {props.title}
-        </div>
-        <div class="err-reasons">
-          <div>{props.text}</div>
-        </div>
+    <>
+      {active && (
+        <div
+          class={styles.mask}
+          style={{ opacity: 0.5 }}
+          onClick={currentTargetOnly}
+        ></div>
+      )}
+      <section
+        class={[modalPopup, active ? "" : modalInactive]}
+        data-open={`${active}`}
+      >
+        <span>{text}</span>
         <button
           ref={buttonRef}
           class={[appPopopClose, styles.hoverable]}
-          onClick={props.onClose}
+          onClick={onClose}
         >
           OK
         </button>
       </section>
-    </div>
+    </>
   );
-}
-
-function stopPropagation(e: MouseEvent): void {
-  return e.stopPropagation();
 }

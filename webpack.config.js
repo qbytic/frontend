@@ -11,7 +11,7 @@ const cfg = require("./.babelrc");
 const { autoPrefixCSS } = require("catom/dist/css");
 const { basename } = require("path");
 
-const isProd = basename(__filename).includes(".prod");
+const isProd = process.env.NODE_ENV === "production";
 
 const mode = isProd ? "production" : "development";
 
@@ -90,6 +90,7 @@ function getCfg(isLegacy) {
           options
         ) {
           const css = await autoPrefixCSS();
+          const touchIntentCSS = await require("./injectables/css-fix").create();
           return {
             compilation: compilation,
             webpackConfig: compilation.options,
@@ -98,6 +99,7 @@ function getCfg(isLegacy) {
               files: assets,
               options: Object.assign(options, {
                 css,
+                touchIntentCSS,
               }),
             },
           };

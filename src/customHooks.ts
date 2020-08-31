@@ -179,8 +179,13 @@ export function useInputFocus(
   props$focus: boolean
 ): { current: HTMLInputElement } {
   const inputRef = useRef<HTMLInputElement>();
+
   useEffect(() => props$focus && inputRef.current && inputRef.current.focus(), [
     props$focus,
   ]);
   return inputRef;
+}
+
+export function useErrorRef(error?: string): { current: string } {
+  return useRef(error);
 }

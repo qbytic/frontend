@@ -1,12 +1,13 @@
 const { minify } = require("terser");
 
 const fn = function () {
-  const hasTouchIntent = /iPhone|iPod|iPad/.test(navigator.platform);
+  var hasTouchIntent = /iPhone|iPod|iPad/.test(navigator.platform);
   if (hasTouchIntent) {
-    const style = document.createElement("style");
+    var style = document.createElement("style");
     style.innerText = "*{cursor:pointer;}";
     document.head.appendChild(style);
   }
 };
 
-module.exports = minify(`(${fn})()`).code;
+const create = () => minify(`(${fn})()`).then(({ code }) => code);
+module.exports = { create };

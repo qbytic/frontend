@@ -1,7 +1,7 @@
 import { A } from "@hydrophobefireman/ui-lib";
 import * as styles from "../../styles";
 interface LogoProps {
-  size?: number;
+  size?: number | string;
   class?: string;
 }
 export function Logo(props: LogoProps) {

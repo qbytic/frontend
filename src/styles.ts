@@ -44,12 +44,22 @@ export const mask = css({
 export const center = css({ margin: "auto", textAlign: "center" });
 
 export const formInp = css({
-  backgroundColor: "#c4c4c4",
-  borderRadius: "20px",
-  border: "2px solid #c4c4c4",
+  backgroundColor: "var(--current-bg)",
+  borderRadius: "10px",
+  border: "2px solid var(--current-color)",
+  transition: "0.3s linear",
+  pseudo: {
+    "[data-active]": { borderColor: "var(--qbytic-blue)" },
+    "[data-error]": { borderColor: "red !important" },
+  },
 });
 
-export const formInpWrapper = css({ width: "60%", margin: "auto" });
+export const formInpWrapper = css({
+  width: "50%",
+  margin: "auto",
+  marginTop: "1.35rem",
+  media: { "only screen and (max-width:800px)": { width: "60%" } },
+});
 
 export const upper = css({ textTransform: "uppercase" });
 

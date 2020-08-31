@@ -11,7 +11,7 @@ import {
 import { useAuthenticationState, useInputFocus } from "../../customHooks";
 
 import { AnimatedInput } from "../shared/AnimatedInput";
-import { Popup } from "../shared/Popup";
+import { SnackBar } from "../shared/Popup";
 import { auth } from "../../http/auth";
 import * as styles from "../../styles";
 export default function Login(): VNode {
@@ -39,13 +39,7 @@ export default function Login(): VNode {
   const closePopup = useCallback(() => setError(null), []);
   return (
     <section class="login">
-      {loginError && (
-        <Popup
-          title="Could not log in"
-          text={loginError}
-          onClose={closePopup}
-        />
-      )}
+      <SnackBar text={loginError} onClose={closePopup} />
       <div
         class={[
           styles.heading,
@@ -63,10 +57,11 @@ export default function Login(): VNode {
   );
 }
 interface InputRendererProps {
-  login(user: string, password: string): void;
+  login(user: string, password: string): Promise<void>;
   focus: boolean;
 }
 function LoginInputRenderer(props: InputRendererProps) {
+  const [submitting, setSubmitting] = useState(false);
   const inputRef = useInputFocus(props.focus);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -84,6 +79,9 @@ function LoginInputRenderer(props: InputRendererProps) {
   }, []);
 
   const onSubmit = useCallback(() => {
+    console.log(submitting);
+    if (submitting) return;
+    setSubmitting(true);
     const [userIsValid, userErrorText] = validators.validateUsername(username);
     const [passwordIsValid, passwordErrorText] = validators.validatePassword(
       password
@@ -101,9 +99,13 @@ function LoginInputRenderer(props: InputRendererProps) {
     });
     const valid = userIsValid && passwordIsValid;
     setFormValid(valid);
-    if (!valid) return;
-    props.login(username, password);
-  }, [username, password, props.login]);
+    if (!valid) {
+      setSubmitting(false);
+      return;
+    }
+    console.log("hm");
+    props.login(username, password).then(() => setSubmitting(false));
+  }, [username, password, props.login, submitting]);
 
   return (
     <form action="javascript:" onSubmit={onSubmit}>

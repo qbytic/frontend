@@ -1,8 +1,0 @@
-header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  padding: 8px;
-  display: flex;
-  flex-direction: row;
-}

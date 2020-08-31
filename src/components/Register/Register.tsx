@@ -3,14 +3,18 @@ import {
   useState,
   useCallback,
   redirect,
+  JSXInternal,
 } from "@hydrophobefireman/ui-lib";
-import { Popup } from "../shared/Popup";
-import { useInputFocus } from "../../customHooks";
+import { SnackBar } from "../shared/Popup";
+import { useInputFocus, useErrorRef } from "../../customHooks";
 import * as validators from "../../util/validators";
 import { AnimatedInput } from "../shared/AnimatedInput";
 import * as requests from "../../http/requests";
 import { userRoutes } from "../../util/api_routes";
 import * as styles from "../../styles";
+import { css } from "catom";
+import { Logo } from "../shared/Logo";
+
 export default function Register(): VNode {
   const [registerError, setRegisterError] = useState<string>(null);
 
@@ -33,127 +37,167 @@ export default function Register(): VNode {
     },
     []
   );
+
   const closePopup = useCallback(() => setRegisterError(null), []);
+
   return (
     <section class="register">
-      {registerError && (
-        <Popup
-          title="Could not log in"
-          text={registerError}
-          onClose={closePopup}
-        />
-      )}
-      <div class="heading nexa bold upper m-heading">Register</div>
+      <div
+        class={[
+          styles.heading,
+          styles.nexa,
+          styles.bold,
+          styles.upper,
+          styles.mHeading,
+        ]}
+      >
+        Register
+      </div>
+      {/* <div class={grayscaleLogo}>
+        <Logo size={"100%"} />
+      </div> */}
       <RegisterInputRenderer focus={!registerError} register={registerUser} />
       {isLoading && <div>Connecting to the server</div>}
+      <SnackBar text={registerError} onClose={closePopup} />
     </section>
   );
 }
 
 interface RegRendererProps {
-  register(user: string, password: string, email: string, name: string): void;
+  register(
+    user: string,
+    password: string,
+    email: string,
+    name: string
+  ): Promise<void>;
   focus: boolean;
 }
 function RegisterInputRenderer(props: RegRendererProps) {
-  const inputRef = useInputFocus(props.focus);
   const [user, setUser] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
 
-  const [userError, setUserError] = useState<string>(null);
-  const [nameError, setNameError] = useState<string>(null);
-  const [emailError, setEmailError] = useState<string>(null);
-  const [passwordError, setPasswordError] = useState<string>(null);
+  const userError = useErrorRef(validators.BLANK_ERROR_USERNAME);
+  const nameError = useErrorRef(validators.BLANK_ERROR_NAME);
+  const emailError = useErrorRef(validators.BLANK_ERROR_EMAIL);
+  const passwordError = useErrorRef(validators.BLANK_ERROR_PASSWORD);
 
-  const [isFormValid, setFormValid] = useState(true);
-
-  const onUserInput = useCallback((e: string) => {
-    setUser(e);
-    setFormValid(true);
-  }, []);
-
-  const onNameInput = useCallback((e: string) => {
-    setName(e);
-    setFormValid(true);
-  }, []);
-
-  const onEmailInput = useCallback((e: string) => {
-    setEmail(e);
-    setFormValid(true);
-  }, []);
-
-  const onPasswordInput = useCallback((e: string) => {
-    setPw(e);
-    setFormValid(true);
-  });
+  const [isValid, setValid] = useState(true);
+  const [isSubmitting, setSubmitting] = useState(false);
 
   const onSubmit = useCallback(() => {
-    const [userIsValid, userErrorText] = validators.validateUsername(user);
-    const [passwordIsValid, passwordErrorText] = validators.validatePassword(
-      pw
+    if (isSubmitting || !isValid) return;
+
+    setSubmitting(true);
+    const isAnyInvalid = [userError, nameError, emailError, passwordError].some(
+      (x) => !!x.current
     );
-    const [emailIsValid, emailErrorText] = validators.validateEmail(email);
-    const [nameIsValid, nameErrorText] = validators.validateName(name);
-    [
-      [userIsValid, userErrorText, setUserError, userError],
-      [passwordIsValid, passwordErrorText, setPasswordError, passwordError],
-      [emailIsValid, emailErrorText, setEmailError, emailError],
-      [nameIsValid, nameErrorText, setNameError, nameError],
-    ].forEach(([isValid, errorText, setError, currentError]) => {
-      if (!isValid) {
-        (setError as any)(errorText);
-      } else if (currentError) {
-        (setError as any)(null);
-      }
-    });
-    const valid = userIsValid && passwordIsValid && emailIsValid && nameIsValid;
-    setFormValid(valid);
-    if (!valid) return;
-    props.register(user, pw, email, name);
-  }, [user, pw, email, name, props.register]);
+    if (isAnyInvalid) {
+      setSubmitting(false);
+      return setValid(false);
+    }
+    props.register(user, pw, email, name).then(() => setSubmitting(false));
+  }, [user, name, email, pw]);
 
   return (
     <form action="javascript:" onSubmit={onSubmit}>
-      <AnimatedInput
-        wrapperClass="form-inp-wrapper"
-        onInput={onUserInput}
-        labelText="Username"
-        inputClass="form-inp"
-        aria-label="username"
-        spellcheck={false}
-        $ref={inputRef}
-        errorText={isFormValid ? null : userError}
+      <InputWrapper
+        label="Username"
+        validate={validators.validateUsername}
+        localErrorState={userError}
+        setValue={setUser}
+        setFormValidState={setValid}
+        formValidState={isValid}
+        $ref={useInputFocus(props.focus)}
+        // minLength={validators.MIN_LENGTH}
+        pattern="\w+"
+        title="Letters, numbers and underscore ( _ )"
+        //required
       />
-      <AnimatedInput
-        wrapperClass="form-inp-wrapper"
-        onInput={onNameInput}
-        labelText="Name"
-        inputClass="form-inp"
-        aria-label="name"
-        spellcheck={false}
-        errorText={isFormValid ? null : nameError}
+      <InputWrapper
+        label="Name"
+        validate={validators.validateName}
+        localErrorState={nameError}
+        setValue={setName}
+        setFormValidState={setValid}
+        formValidState={isValid}
+        // minLength={validators.MIN_LENGTH}
+        //required
       />
-      <AnimatedInput
-        wrapperClass="form-inp-wrapper"
-        onInput={onEmailInput}
-        labelText="email"
-        inputClass="form-inp"
-        aria-label="email"
-        spellcheck={false}
+      <InputWrapper
+        label="Email"
+        validate={validators.validateEmail}
+        localErrorState={emailError}
+        setValue={setEmail}
+        setFormValidState={setValid}
+        formValidState={isValid}
         type="email"
-        errorText={isFormValid ? null : emailError}
+        //required
       />
-      <AnimatedInput
-        wrapperClass="form-inp-wrapper"
-        onInput={onPasswordInput}
-        labelText="Password"
-        inputClass="form-inp"
-        aria-label="Password"
-        errorText={isFormValid ? null : passwordError}
+      <InputWrapper
+        label="Password"
+        validate={validators.validatePassword}
+        localErrorState={passwordError}
+        setValue={setPw}
+        setFormValidState={setValid}
+        formValidState={isValid}
         type="password"
+        // minLength={validators.MIN_LENGTH}
+        //required
       />
       <button class={[styles.hoverable, styles.actionBtn]}>Log In</button>
     </form>
+  );
+}
+
+interface WrapperInputProps
+  extends Omit<JSXInternal.HTMLAttributes, "onInput" | "value"> {
+  label: string;
+  validate(value: string): validators.ValidationResponse;
+  localErrorState: { current: string };
+  setValue(value: string): void;
+  formValidState: boolean;
+  setFormValidState(value: boolean): void;
+  type?: string;
+  $ref?: { current: HTMLElement };
+}
+function InputWrapper(props: WrapperInputProps) {
+  const {
+    label,
+    validate,
+    type,
+    $ref,
+    setFormValidState,
+    localErrorState,
+    formValidState,
+    setValue,
+    ...rest
+  } = props;
+  const currError = localErrorState.current;
+  const onInput = useCallback(
+    (e: string) => {
+      const [isValid, errorText] = validate(e);
+      localErrorState.current = isValid ? null : errorText;
+      setValue(e);
+      setFormValidState(true);
+    },
+    [setFormValidState, localErrorState, validate]
+  );
+
+  return (
+    <AnimatedInput
+      wrapperClass={styles.formInpWrapper}
+      inputClass={styles.formInp}
+      onInput={onInput}
+      labelText={label}
+      aria-label={label}
+      type={type || "text"}
+      $ref={$ref}
+      errorText={!formValidState && currError}
+      data-local-error-state={currError}
+      name={label.toLowerCase()}
+      {...rest}
+    />
   );
 }

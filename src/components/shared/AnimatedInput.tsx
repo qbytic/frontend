@@ -9,33 +9,25 @@ import {
 import { css } from "catom";
 
 const animateCSS = css({
-  margin: "auto",
-  textAlign: "left",
   fontWeight: 700,
   textTransform: "uppercase",
-  width: "auto;width:fit-content;",
-  paddingLeft: "4px",
-  paddingRight: "4px",
-  display: "inline-flex",
-  flexWrap: "wrap",
   userSelect: "none",
-  transform: "var(--translate-normal-pos)",
   pointerEvents: "none",
   fontSize: "1.3rem",
-  transition: "0.3s linear",
+  transition: "transform 0.2s linear",
+  left: "12%",
+  position: "absolute",
+  top: "0",
+  width: "fit-content",
+  clipPath: "inset(0px 0px calc(1rem - 4px) 0px)",
 });
 
 const moveUp = css({
-  animation: "moveUp 0.1s linear 0s 1  normal  forwards",
-  animationIterationCount: "1",
-  transformOrigin: "50% 50%",
+  background: "var(--current-bg)",
+  transform: "translate(0, -48%)",
+  color: "var(--qbytic-blue)",
 });
-
-const moveDown = css({
-  animation: "moveDown 0.1s linear 0s 1  normal  forwards",
-  animationIterationCount: "1",
-  transformOrigin: "50% 50%",
-});
+const moveDown = css({ background: "transparent" });
 
 const paperInput = css({
   display: "block",
@@ -45,13 +37,15 @@ const paperInput = css({
   outline: "0",
   height: "30px",
   transition: "0.1s cubic-bezier(0.46, 1, 0.74, 1.07)",
-  color: "var(--input-color)",
   fontWeight: 700,
   margin: "auto",
+  color: "var(--current-color)",
   textAlign: "left",
 });
 
 const errorCss = css({ color: "red !important" });
+
+const wrapperCSS = css({ position: "relative" });
 
 interface InputProps extends Omit<JSXInternal.HTMLAttributes, "onInput"> {
   id?: string;
@@ -66,7 +60,7 @@ interface InputProps extends Omit<JSXInternal.HTMLAttributes, "onInput"> {
 }
 
 export function AnimatedInput(props: InputProps): VNode {
-  const randomId = useMemo(() => "" + Math.random(), []);
+  const randomId = useMemo(() => Math.random().toString(36).substr(2), []);
 
   const {
     id = randomId,
@@ -92,14 +86,13 @@ export function AnimatedInput(props: InputProps): VNode {
     propOnInput && propOnInput(val);
   }
   const onInput = useCallback(handleInput, [propOnInput]);
-
+  const active = value || isFocused;
   return (
-    <div class={["inp_wrapper"].concat(wrapperClass)}>
+    <div class={[wrapperCSS].concat(wrapperClass)}>
       <label
-        class={[animateCSS].concat(
-          value || isFocused || errorText ? moveUp : moveDown,
-          [errorText ? errorCss : null]
-        )}
+        class={[animateCSS].concat(active || errorText ? moveUp : moveDown, [
+          errorText ? errorCss : null,
+        ])}
         for={id}
       >
         {errorText || labelText}
@@ -110,6 +103,8 @@ export function AnimatedInput(props: InputProps): VNode {
         onInput={onInput}
         id={id}
         value={value}
+        data-active={active}
+        data-error={!!errorText}
         class={[paperInput].concat(inputClass)}
         ref={$ref}
         {...rest}

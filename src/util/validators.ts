@@ -1,6 +1,8 @@
-type ValidationResponse = [boolean, string?];
+export type ValidationResponse = [boolean, string?];
 
-const MAX_NAME_LENGTH = 30;
+export const MAX_LENGTH = 30;
+export const MIN_LENGTH = 4;
+
 export const sanitizeRegExp = /([^\w])/g;
 export const clean = (x: string): string =>
   (x + "").replace(sanitizeRegExp, "");
@@ -16,12 +18,8 @@ function validateRequiredString(
 function validateUsername(username: string): ValidationResponse {
   if (!validateRequiredString(username))
     return [false, "Username cannot be blank"];
-  if (username.length > MAX_NAME_LENGTH)
-    return [
-      false,
-      `Username cannot be longer than ${MAX_NAME_LENGTH} characters`,
-    ];
-  if (username.length < 4) return [false, "Username too short"];
+  if (username.length > MAX_LENGTH) return [false, `Username too long`];
+  if (username.length < MIN_LENGTH) return [false, "Username too short"];
   if (clean(username) !== username) return [false, "Invalid username"];
 
   return [true];
@@ -31,8 +29,8 @@ function validateName(name: string): ValidationResponse {
     return [false, "Name cannot be blank"];
   }
 
-  if (name.length > MAX_NAME_LENGTH) {
-    return [false, `Name cannot be longer than ${MAX_NAME_LENGTH} characters`];
+  if (name.length > MAX_LENGTH) {
+    return [false, `Name too long`];
   }
   return [true];
 }
@@ -41,16 +39,28 @@ function validatePassword(password: string): ValidationResponse {
   if (!validateRequiredString(password, true)) {
     return [false, "Password cannot be blank"];
   }
-  if (password.length < 4) {
+  if (password.length < MIN_LENGTH) {
     return [false, "Password too short"];
   }
   return [true];
 }
-function validateEmail(email: string) {
+function validateEmail(email: string): ValidationResponse {
   if (!validateRequiredString(email)) {
     return [false, "Email cannot be blank"];
   }
   return [true];
 }
-
-export { validateName, validatePassword, validateEmail, validateUsername };
+const BLANK_ERROR_USERNAME = validateUsername("")[1];
+const BLANK_ERROR_NAME = validateName("")[1];
+const BLANK_ERROR_PASSWORD = validatePassword("")[1];
+const BLANK_ERROR_EMAIL = validateEmail("")[1];
+export {
+  validateName,
+  validatePassword,
+  validateEmail,
+  validateUsername,
+  BLANK_ERROR_USERNAME,
+  BLANK_ERROR_NAME,
+  BLANK_ERROR_EMAIL,
+  BLANK_ERROR_PASSWORD,
+};

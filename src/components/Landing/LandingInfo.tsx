@@ -58,9 +58,8 @@ function AboutQbytic(props: ThemeChangeProps): VNode {
             target="_blank"
             href={DISCORD_SERVER_LINK}
           >
-            Discord Server
+            Discord Server.
           </a>
-          .
         </div>
         <div>
           All the events have been planned to ensure maximum cross
