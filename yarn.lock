@@ -947,10 +947,10 @@
   resolved "https://registry.yarnpkg.com/@hydrophobefireman/j-utils/-/j-utils-2.1.1.tgz#60db8904a26084f2092769686859d74d12467234"
   integrity sha512-4ZOe1ltbAbpfyafoaEimFiobwxcoNGuF4Mx6kmLWj0RwVCbTCsOrjSyoZUIn9kJ+0RJd4vycdmhOcvkPmoI2vg==
 
-"@hydrophobefireman/ui-lib@^1.4.18":
-  version "1.4.18"
-  resolved "https://registry.yarnpkg.com/@hydrophobefireman/ui-lib/-/ui-lib-1.4.18.tgz#e33ea6b37a0e05cf76bb6e77ae1ea3b988f027b2"
-  integrity sha512-cifQnZ32/lMHlr2Ee39cSc1+Cag3G7InlIUwoxG7iU4WYF+Wucv7dBhwPqs9IkhalS1ysrOLq+cQbZrjj60V4Q==
+"@hydrophobefireman/ui-lib@^1.4.19":
+  version "1.4.19"
+  resolved "https://registry.yarnpkg.com/@hydrophobefireman/ui-lib/-/ui-lib-1.4.19.tgz#3a0de677565c58d0080af046d61a3a2d94324e29"
+  integrity sha512-wROCVPiZCo/4/zqXhEjEq55PsCpfaIxgOxdNy4hSud4yAbPueoc6hTjjfLOgxS36IWt2kgVr4RfEcaD68bGzLg==
 
 "@npmcli/move-file@^1.0.1":
   version "1.0.1"
