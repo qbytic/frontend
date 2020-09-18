@@ -86,7 +86,7 @@ export function AnimatedInput(props: InputProps): VNode {
     propOnInput && propOnInput(val);
   }
   const onInput = useCallback(handleInput, [propOnInput]);
-  const active = value || isFocused;
+  const active = !!(value || isFocused);
   return (
     <div class={[wrapperCSS].concat(wrapperClass)}>
       <label

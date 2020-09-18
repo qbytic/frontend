@@ -80,7 +80,7 @@ export function Header() {
       {route !== "/" && <LinkHome />}
       <nav class={headerNav}>
         <MenuButton onClick={onClick} active={isActive} />
-        {<LinkRenderer onClick={onClick} active={isActive} />}
+        <LinkRenderer onClick={onClick} active={isActive} />
       </nav>
     </header>
   );
